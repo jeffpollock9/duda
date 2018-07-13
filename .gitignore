@@ -3,7 +3,7 @@
 *#
 
 # Cmake
-compile_commands.json
+compile_comands.json
 
 # Prerequisites
 *.d
