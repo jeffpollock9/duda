@@ -6,7 +6,7 @@ option(DUDA_TEST "Build tests" OFF)
 option(DUDA_BENCHMARK "Build benchmarks" OFF)
 option(DUDA_EXAMPLE "Build examples" OFF)
 
-message(STATUS "Configuring ${PROJET_NAME} version: ${PROJECT_VERSION}")
+message(STATUS "Configuring ${PROJECT_NAME} version: ${PROJECT_VERSION}")
 message(STATUS "  Options:")
 message(STATUS "   DUDA_TEST: ${DUDA_TEST}")
 message(STATUS "   DUDA_BENCHMARK: ${DUDA_BENCHMARK}")

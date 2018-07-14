@@ -3,6 +3,29 @@
 
 #include "device_matrix.hpp"
 
+template <typename T>
+using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
+
+template <typename T>
+using device_matrix = duda::device_matrix<T>;
+
+template <typename T>
+host_matrix<T> copy(const device_matrix<T>& device)
+{
+    host_matrix<T> host(device.rows(), device.cols());
+    duda::copy(device, host.data());
+    return host;
+}
+
+template <typename T>
+device_matrix<T> copy(const host_matrix<T>& host)
+{
+    const int rows = host.rows();
+    const int cols = host.cols();
+
+    return {host.data(), rows, cols};
+}
+
 TEST_CASE("host -> device -> host", "[device_matrix]")
 {
     const int rows = 4;
@@ -10,24 +33,18 @@ TEST_CASE("host -> device -> host", "[device_matrix]")
 
     SECTION("using float")
     {
-        Eigen::MatrixXf h1 = Eigen::MatrixXf::Random(rows, cols);
-        Eigen::MatrixXf h2(rows, cols);
-
-        duda::device_matrix<float> d(h1.data(), rows, cols);
-
-        duda::copy(d, h2.data());
+        host_matrix<float> h1  = host_matrix<float>::Random(rows, cols);
+        device_matrix<float> d = copy(h1);
+        host_matrix<float> h2  = copy(d);
 
         REQUIRE(h1.isApprox(h2));
     }
 
     SECTION("using double")
     {
-        Eigen::MatrixXd h1 = Eigen::MatrixXd::Random(rows, cols);
-        Eigen::MatrixXd h2(rows, cols);
-
-        duda::device_matrix<double> d(h1.data(), rows, cols);
-
-        duda::copy(d, h2.data());
+        host_matrix<double> h1  = host_matrix<double>::Random(rows, cols);
+        device_matrix<double> d = copy(h1);
+        host_matrix<double> h2  = copy(d);
 
         REQUIRE(h1.isApprox(h2));
     }
@@ -42,22 +59,31 @@ TEST_CASE("axpy", "[device_matrix]")
     {
         const float alpha = 3.14;
 
-        auto x1 = duda::device_matrix<float>::random(rows, cols);
-        auto y1 = duda::device_matrix<float>::random(rows, cols);
+        auto x_d = device_matrix<float>::random(rows, cols);
+        auto y_d = device_matrix<float>::random(rows, cols);
 
-        Eigen::MatrixXf x2(rows, cols);
-        Eigen::MatrixXf y2(rows, cols);
+        host_matrix<float> x_h = copy(x_d);
+        host_matrix<float> y_h = copy(y_d);
 
-        duda::copy(x1, x2.data());
-        duda::copy(y1, y2.data());
+        duda::axpy(alpha, x_d, y_d);
+        y_h += alpha * x_h;
 
-        duda::axpy(alpha, x1, y1);
-        y2 += alpha * x2;
+        REQUIRE(y_h.isApprox(copy(y_d)));
+    }
 
-        Eigen::MatrixXf y3(rows, cols);
+    SECTION("using double")
+    {
+        const double alpha = 42.0;
 
-        duda::copy(y1, y3.data());
+        auto x_d = device_matrix<double>::random(rows, cols);
+        auto y_d = device_matrix<double>::random(rows, cols);
 
-        REQUIRE(y2.isApprox(y3));
+        host_matrix<double> x_h = copy(x_d);
+        host_matrix<double> y_h = copy(y_d);
+
+        duda::axpy(alpha, x_d, y_d);
+        y_h += alpha * x_h;
+
+        REQUIRE(y_h.isApprox(copy(y_d)));
     }
 }
