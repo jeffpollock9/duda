@@ -10,6 +10,8 @@
 
 #ifdef __GNUC__
 #define UNLIKELY(x) __builtin_expect(x, 0)
+#elif
+#define UNLIKELY(x) x
 #endif
 
 namespace duda

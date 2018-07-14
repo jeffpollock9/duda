@@ -20,12 +20,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_library(duda INTERFACE)
 
 target_link_libraries(duda INTERFACE
-    "${CUDA_CUDART_LIBRARY};${CUDA_cublas_LIBRARY};${CUDA_curand_LIBRARY}")
+    ${CUDA_CUDART_LIBRARY}
+    ${CUDA_cublas_LIBRARY}
+    ${CUDA_curand_LIBRARY})
 
 target_include_directories(duda INTERFACE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
-
-target_include_directories(duda INTERFACE ${CUDA_TOOLKIT_INCLUDE})
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+    ${CUDA_TOOLKIT_INCLUDE})
 
 target_compile_features(duda INTERFACE cxx_std_14)
 

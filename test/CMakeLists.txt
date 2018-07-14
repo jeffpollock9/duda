@@ -1,6 +1,6 @@
 find_package(Eigen3)
 
-add_library(catch catch/catch.cpp)
+add_library(catch SHARED catch/catch.cpp)
 
 set(DUDA_TESTS device_matrix)
 
