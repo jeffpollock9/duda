@@ -5,21 +5,36 @@
 
 #include "check_error.hpp"
 #include "curand_generator.hpp"
+#include "detail.hpp"
 
 namespace duda
 {
 
-inline void fill_random_uniform(float* const data, const int size)
+template <typename T>
+inline void fill_random_uniform(T* const data, const int size)
 {
-    const auto code = curandGenerateUniform(curand_gen().value(), data, size);
+    const auto code = detail::overload<T>::call(curandGenerateUniform,
+                                                curandGenerateUniformDouble,
+                                                curand_gen().value(),
+                                                data,
+                                                size);
 
     check_curand_error(code);
 }
 
-inline void fill_random_uniform(double* const data, const int size)
+template <typename T>
+inline void fill_random_normal(T* const data,
+                               const int size,
+                               const T mean   = 0.0,
+                               const T stddev = 0.0)
 {
-    const auto code =
-        curandGenerateUniformDouble(curand_gen().value(), data, size);
+    const auto code = detail::overload<T>::call(curandGenerateNormal,
+                                                curandGenerateNormalDouble,
+                                                curand_gen().value(),
+                                                data,
+                                                size,
+                                                mean,
+                                                stddev);
 
     check_curand_error(code);
 }

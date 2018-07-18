@@ -1,6 +1,7 @@
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"
 
+#include "blas.hpp"
 #include "device_matrix.hpp"
 
 template <typename T>
@@ -20,7 +21,7 @@ static void BM_host_axpy(benchmark::State& state)
 
     for (auto _ : state)
     {
-        y += a * x;
+        y = a * x + y;
     }
 }
 
@@ -30,8 +31,8 @@ static void BM_device_axpy(benchmark::State& state)
     const int n = state.range(0);
     const T a   = 0.001;
 
-    device_matrix<T> x = device_matrix<T>::random(n, n);
-    device_matrix<T> y = device_matrix<T>::random(n, n);
+    device_matrix<T> x = device_matrix<T>::random_uniform(n, n);
+    device_matrix<T> y = device_matrix<T>::random_uniform(n, n);
 
     for (auto _ : state)
     {
