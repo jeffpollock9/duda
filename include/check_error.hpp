@@ -1,12 +1,12 @@
 #ifndef DUDA_CHECK_ERROR_HPP_
 #define DUDA_CHECK_ERROR_HPP_
 
-#include <stdexcept>
-#include <string>
-
 #include <cublas_v2.h>
 #include <cuda_runtime_api.h>
 #include <curand.h>
+
+#include <stdexcept>
+#include <string>
 
 #ifdef __GNUC__
 #define UNLIKELY(x) __builtin_expect(x, 0)

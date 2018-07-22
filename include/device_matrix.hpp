@@ -1,11 +1,13 @@
 #ifndef DEVICE_MATRIX_HPP_
 #define DEVICE_MATRIX_HPP_
 
-#include <cuda_runtime_api.h>
-
 #include "check_error.hpp"
 #include "curand_generator.hpp"
 #include "random.hpp"
+
+#include <cuda_runtime_api.h>
+
+#include <utility>
 
 namespace duda
 {
@@ -26,14 +28,47 @@ struct device_matrix
         : device_matrix(rows, cols)
     {
         const auto code =
-            cudaMemcpy(data(), host, bytes(), cudaMemcpyHostToDevice);
+            cudaMemcpy(data_, host, bytes(), cudaMemcpyHostToDevice);
 
         check_cuda_error(code);
     }
 
+    device_matrix(const device_matrix& x) : device_matrix(x.rows(), x.cols())
+    {
+        const auto code =
+            cudaMemcpy(data_, x.data_, bytes(), cudaMemcpyDeviceToDevice);
+
+        check_cuda_error(code);
+    }
+
+    device_matrix(device_matrix&& x) : rows_(x.rows()), cols_(x.cols())
+    {
+        std::swap(data_, x.data_);
+    }
+
+    device_matrix& operator=(device_matrix x)
+    {
+        rows_ = x.rows();
+        cols_ = x.cols();
+
+        std::swap(data_, x.data_);
+
+        return *this;
+    }
+
+    device_matrix& operator=(device_matrix&& x)
+    {
+        rows_ = x.rows();
+        cols_ = x.cols();
+
+        std::swap(data_, x.data_);
+
+        return *this;
+    }
+
     ~device_matrix()
     {
-        const auto code = cudaFree(data());
+        const auto code = cudaFree(data_);
 
         check_cuda_error(code);
     }
@@ -42,7 +77,7 @@ struct device_matrix
     {
         device_matrix x(rows, cols);
 
-        fill_random_uniform(x.data(), x.size());
+        fill_random_uniform(x.data_, x.size());
 
         return x;
     }
@@ -54,7 +89,7 @@ struct device_matrix
     {
         device_matrix x(rows, cols);
 
-        fill_random_normal(x.data(), x.size(), mean, stddev);
+        fill_random_normal(x.data_, x.size(), mean, stddev);
 
         return x;
     }
@@ -71,7 +106,7 @@ struct device_matrix
 
     int size() const
     {
-        return rows() * cols();
+        return rows_ * cols_;
     }
 
     int bytes() const

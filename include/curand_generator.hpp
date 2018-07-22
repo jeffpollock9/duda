@@ -1,9 +1,9 @@
 #ifndef DUDA_CURAND_GENERATOR_HPP_
 #define DUDA_CURAND_GENERATOR_HPP_
 
-#include <curand.h>
-
 #include "check_error.hpp"
+
+#include <curand.h>
 
 namespace duda
 {

@@ -1,8 +1,8 @@
-#include "Eigen/Dense"
-#include "benchmark/benchmark.h"
-
 #include "blas.hpp"
 #include "device_matrix.hpp"
+
+#include "Eigen/Dense"
+#include "benchmark/benchmark.h"
 
 template <typename T>
 using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;

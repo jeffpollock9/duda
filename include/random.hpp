@@ -1,11 +1,11 @@
 #ifndef DUDA_RANDOM_HPP_
 #define DUDA_RANDOM_HPP_
 
-#include <curand.h>
-
 #include "check_error.hpp"
 #include "curand_generator.hpp"
 #include "detail.hpp"
+
+#include <curand.h>
 
 namespace duda
 {

@@ -1,8 +1,8 @@
-#include "Eigen/Dense"
-#include "benchmark/benchmark.h"
-
 #include "blas.hpp"
 #include "device_matrix.hpp"
+
+#include "Eigen/Dense"
+#include "benchmark/benchmark.h"
 
 template <typename T>
 using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
@@ -40,7 +40,7 @@ static void BM_device_gemm(benchmark::State& state)
 
     for (auto _ : state)
     {
-        gemm(alpha, A, B, beta, C);
+        gemm(duda::op::none, duda::op::none, alpha, A, B, beta, C);
     }
 }
 
