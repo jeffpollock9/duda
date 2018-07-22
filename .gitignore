@@ -3,7 +3,10 @@
 *#
 
 # Cmake
-compile_comands.json
+compile_commands.json
+
+# cquery
+.cquery_cached_index
 
 # Prerequisites
 *.d
