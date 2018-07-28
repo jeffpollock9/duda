@@ -4,22 +4,29 @@
 #include "cublas_handle.hpp"
 #include "detail.hpp"
 #include "device_matrix.hpp"
+#include "dim.hpp"
+#include "macros.hpp"
+#include "op.hpp"
 
 #include <cublas_v2.h>
 
-#include <type_traits>
+#include <stdexcept>
 
 namespace duda
 {
 
-enum class op : std::underlying_type_t<cublasOperation_t> {
-    none      = CUBLAS_OP_N,
-    transpose = CUBLAS_OP_T
-};
-
 template <typename T>
 inline void axpy(const T alpha, const device_matrix<T>& x, device_matrix<T>& y)
 {
+    const dim dim_x(x);
+    const dim dim_y(y);
+
+    if (DUDA_UNLIKELY(dim_x != dim_y))
+    {
+        throw std::runtime_error("can't axpy with dimensions " + dim_x +
+                                 " and " + dim_y);
+    }
+
     const int incx = 1;
     const int incy = 1;
 
@@ -45,6 +52,23 @@ inline void gemm(const op op_a,
                  const T beta,
                  device_matrix<T>& c)
 {
+    const dim dim_op_a = dim(a, op_a);
+    const dim dim_op_b = dim(b, op_b);
+    const dim dim_c    = dim(c);
+
+    if (DUDA_UNLIKELY(dim_op_a.cols != dim_op_b.rows))
+    {
+        throw std::runtime_error("can't gemm with input dimensions " +
+                                 dim_op_a + " and " + dim_op_b);
+    }
+
+    if (DUDA_UNLIKELY(dim(dim_op_a.rows, dim_op_b.cols) != dim_c))
+    {
+        throw std::runtime_error("can't gemm with input dimensions " +
+                                 dim_op_a + " and " + dim_op_b +
+                                 " and ouput dimension " + dim_c);
+    }
+
     const int m = a.rows();
     const int n = b.cols();
     const int k = a.cols();
@@ -70,6 +94,36 @@ inline void gemm(const op op_a,
                                   &beta,
                                   c.data(),
                                   ldc);
+
+    check_cublas_error(code);
+}
+
+template <typename T>
+inline void dot(const device_matrix<T>& x, const device_matrix<T>& y, T& result)
+{
+    const dim dim_x(x);
+    const dim dim_y(y);
+
+    if (DUDA_UNLIKELY(dim_x != dim_y || dim_x.cols != 1))
+    {
+        throw std::runtime_error("can't dot with dimensions " + dim_x +
+                                 " and " + dim_y);
+    }
+
+    const int n = x.size();
+
+    const int incx = 1;
+    const int incy = 1;
+
+    const auto code = detail::overload<T>::call(cublasSdot,
+                                                cublasDdot,
+                                                cublas_handle().value(),
+                                                n,
+                                                x.data(),
+                                                incx,
+                                                y.data(),
+                                                incy,
+                                                &result);
 
     check_cublas_error(code);
 }
