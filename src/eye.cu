@@ -25,10 +25,10 @@ __global__ void eye_kernel(T* const data, const int rows, const int cols)
 
 void eye(double* const data, const int rows, const int cols)
 {
-    const dim3 grid_dim(rows, cols);
-    const dim3 block_dim(1, 1);
+    const dim3 blocks(1, 1);
+    const dim3 threads_per_block(rows, cols);
 
-    eye_kernel<double><<<grid_dim, block_dim>>>(data, rows, cols);
+    eye_kernel<double><<<blocks, threads_per_block>>>(data, rows, cols);
 }
 
 } // namespace duda
