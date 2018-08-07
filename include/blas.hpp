@@ -66,12 +66,12 @@ inline void gemm(const op op_a,
     {
         throw std::runtime_error("can't gemm with input dimensions " +
                                  dim_op_a + " and " + dim_op_b +
-                                 " and ouput dimension " + dim_c);
+                                 " and output dimension " + dim_c);
     }
 
-    const int m = a.rows();
-    const int n = b.cols();
-    const int k = a.cols();
+    const int m = dim_op_a.rows;
+    const int n = dim_op_b.cols;
+    const int k = dim_op_a.cols;
 
     const int lda = a.rows();
     const int ldb = b.rows();
