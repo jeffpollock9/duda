@@ -4,7 +4,9 @@
 namespace duda
 {
 
-void eye(double* const data, const int rows, const int cols);
+void eye(float* const data, const int dim);
+
+void eye(double* const data, const int dim);
 
 } // namespace duda
 

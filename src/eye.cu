@@ -2,15 +2,18 @@
 namespace duda
 {
 
+namespace kernel
+{
+
 template <typename T>
-__global__ void eye_kernel(T* const data, const int rows, const int cols)
+__global__ void eye(T* const data, const int dim)
 {
     const int i = blockDim.x * blockIdx.x + threadIdx.x;
     const int j = blockDim.y * blockIdx.y + threadIdx.y;
 
-    if (i < rows && j < cols)
+    if (i < dim && j < dim)
     {
-        const int ix = i + j * rows;
+        const int ix = i + j * dim;
 
         if (i == j)
         {
@@ -23,12 +26,33 @@ __global__ void eye_kernel(T* const data, const int rows, const int cols)
     }
 }
 
-void eye(double* const data, const int rows, const int cols)
-{
-    const dim3 blocks(1, 1);
-    const dim3 threads_per_block(rows, cols);
+} // namespace kernel
 
-    eye_kernel<double><<<blocks, threads_per_block>>>(data, rows, cols);
+namespace detail
+{
+
+template <typename T>
+inline void eye(T* const data, const int dim)
+{
+    const int d = 32;
+    const int n = (dim + d) / d;
+
+    const dim3 blocks(n, n);
+    const dim3 block_dim(d, d);
+
+    kernel::eye<T><<<blocks, block_dim>>>(data, dim);
+}
+
+} // namespace detail
+
+void eye(float* const data, const int dim)
+{
+    detail::eye(data, dim);
+}
+
+void eye(double* const data, const int dim)
+{
+    detail::eye(data, dim);
 }
 
 } // namespace duda

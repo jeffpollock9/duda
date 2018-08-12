@@ -9,7 +9,7 @@ TEST_CASE("default ctor", "[device_matrix]")
 template <typename T>
 void test_copy_ctor(const int rows, const int cols)
 {
-    device_matrix<T> x_d = device_matrix<T>::random_normal(rows, cols);
+    device_matrix<T> x_d = duda::random_normal<T>(rows, cols);
     device_matrix<T> y_d(x_d);
     device_matrix<T> z_d = x_d;
 
@@ -33,7 +33,7 @@ TEST_CASE("copy ctor", "[device_matrix]")
 template <typename T>
 void test_move_ctor(const int rows, const int cols)
 {
-    device_matrix<T> x_d = device_matrix<T>::random_normal(rows, cols);
+    device_matrix<T> x_d = duda::random_normal<T>(rows, cols);
     host_matrix<T> x_h   = copy(x_d);
 
     device_matrix<T> y_d = std::move(x_d);

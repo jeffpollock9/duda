@@ -1,7 +1,10 @@
 #ifndef DUDA_TEST_HELPERS_HPP_
 #define DUDA_TEST_HELPERS_HPP_
 
+#include "eye.hpp"
 #include "blas.hpp"
+#include "copy.hpp"
+#include "random.hpp"
 #include "device_matrix.hpp"
 
 #include "Eigen/Dense"

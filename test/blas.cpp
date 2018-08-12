@@ -3,8 +3,8 @@
 template <typename T>
 void test_axpy(const T alpha, const int rows, const int cols)
 {
-    auto x_d = device_matrix<T>::random_normal(rows, cols);
-    auto y_d = device_matrix<T>::random_normal(rows, cols);
+    auto x_d = duda::random_normal<T>(rows, cols);
+    auto y_d = duda::random_normal<T>(rows, cols);
 
     host_matrix<T> x_h = copy(x_d);
     host_matrix<T> y_h = copy(y_d);
@@ -25,9 +25,9 @@ template <typename T>
 void test_gemm(
     const T alpha, const T beta, const int m, const int n, const int k)
 {
-    auto A_d = device_matrix<T>::random_normal(n, m);
-    auto B_d = device_matrix<T>::random_normal(m, k);
-    auto C_d = device_matrix<T>::random_normal(n, k);
+    auto A_d = duda::random_normal<T>(n, m);
+    auto B_d = duda::random_normal<T>(m, k);
+    auto C_d = duda::random_normal<T>(n, k);
 
     host_matrix<T> A_h = copy(A_d);
     host_matrix<T> B_h = copy(B_d);
@@ -50,9 +50,9 @@ template <typename T>
 void test_gemm_transpose(
     const T alpha, const T beta, const int m, const int n, const int k)
 {
-    auto A_d = device_matrix<T>::random_normal(n, m);
-    auto B_d = device_matrix<T>::random_normal(k, n);
-    auto C_d = device_matrix<T>::random_normal(m, k);
+    auto A_d = duda::random_normal<T>(n, m);
+    auto B_d = duda::random_normal<T>(k, n);
+    auto C_d = duda::random_normal<T>(m, k);
 
     host_matrix<T> A_h = copy(A_d);
     host_matrix<T> B_h = copy(B_d);
@@ -74,8 +74,8 @@ TEST_CASE("gemm transpose ops", "[device_matrix][blas]")
 template <typename T>
 void test_dot(const int n)
 {
-    auto x_d = device_matrix<T>::random_normal(n, 1);
-    auto y_d = device_matrix<T>::random_normal(n, 1);
+    auto x_d = duda::random_normal<T>(n, 1);
+    auto y_d = duda::random_normal<T>(n, 1);
 
     host_matrix<T> x_h = copy(x_d);
     host_matrix<T> y_h = copy(y_d);

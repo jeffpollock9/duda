@@ -1,5 +1,6 @@
 #include "blas.hpp"
 #include "device_matrix.hpp"
+#include "random.hpp"
 
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"
@@ -34,9 +35,9 @@ static void BM_device_gemm(benchmark::State& state)
     const T alpha = 0.001;
     const T beta  = 0.02;
 
-    device_matrix<T> a = device_matrix<T>::random_uniform(n, n);
-    device_matrix<T> b = device_matrix<T>::random_uniform(n, n);
-    device_matrix<T> c = device_matrix<T>::random_uniform(n, n);
+    device_matrix<T> a = duda::random_uniform<T>(n, n);
+    device_matrix<T> b = duda::random_uniform<T>(n, n);
+    device_matrix<T> c = duda::random_uniform<T>(n, n);
 
     for (auto _ : state)
     {

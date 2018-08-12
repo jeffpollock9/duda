@@ -1,5 +1,6 @@
 #include "blas.hpp"
 #include "device_matrix.hpp"
+#include "random.hpp"
 
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"
@@ -31,8 +32,8 @@ static void BM_device_axpy(benchmark::State& state)
     const int n = state.range(0);
     const T a   = 0.001;
 
-    device_matrix<T> x = device_matrix<T>::random_uniform(n, n);
-    device_matrix<T> y = device_matrix<T>::random_uniform(n, n);
+    device_matrix<T> x = duda::random_uniform<T>(n, n);
+    device_matrix<T> y = duda::random_uniform<T>(n, n);
 
     for (auto _ : state)
     {
