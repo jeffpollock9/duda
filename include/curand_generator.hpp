@@ -12,17 +12,13 @@ struct curand_generator_wrapper
 {
     curand_generator_wrapper()
     {
-        const auto code =
-            curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT);
-
-        check_curand_error(code);
+        check_curand_error(
+            curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT));
     }
 
     ~curand_generator_wrapper()
     {
-        const auto code = curandDestroyGenerator(gen_);
-
-        check_curand_error(code);
+        check_curand_error(curandDestroyGenerator(gen_));
     }
 
     curandGenerator_t& value()
@@ -33,13 +29,8 @@ struct curand_generator_wrapper
     void seed(const unsigned long long seed   = 0xdeadbeef,
               const unsigned long long offset = 0)
     {
-        const auto seed_code = curandSetPseudoRandomGeneratorSeed(gen_, seed);
-
-        check_curand_error(seed_code);
-
-        const auto offset_code = curandSetGeneratorOffset(gen_, offset);
-
-        check_curand_error(offset_code);
+        check_curand_error(curandSetPseudoRandomGeneratorSeed(gen_, seed));
+        check_curand_error(curandSetGeneratorOffset(gen_, offset));
     }
 
 private:

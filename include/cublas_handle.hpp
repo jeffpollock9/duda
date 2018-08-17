@@ -12,16 +12,12 @@ struct cublas_handle_wrapper
 {
     cublas_handle_wrapper()
     {
-        const auto code = cublasCreate(&handle_);
-
-        check_cublas_error(code);
+        check_cublas_error(cublasCreate(&handle_));
     }
 
     ~cublas_handle_wrapper()
     {
-        const auto code = cublasDestroy(handle_);
-
-        check_cublas_error(code);
+        check_cublas_error(cublasDestroy(handle_));
     }
 
     cublasHandle_t& value()
