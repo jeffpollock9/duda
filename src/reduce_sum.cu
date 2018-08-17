@@ -8,38 +8,32 @@ namespace detail
 {
 
 template <typename T>
-inline T reduce_sum(T* const data, const int size)
+inline T reduce_sum(const T* const data, const int size)
 {
-    // storage for answer
-    T* out_d = NULL;
-
-    const cudaError_t code1 = cudaMalloc((void**)&out_d, sizeof(T) * 1);
-
-    // get temp storage
+    T* out_d          = NULL;
     void* tmp_storage = NULL;
+
+    const auto code1 = cudaMalloc((void**)&out_d, sizeof(T));
 
     std::size_t tmp_storage_bytes = 0;
 
-    const cudaError_t code2 = cub::DeviceReduce::Sum(
+    const auto code2 = cub::DeviceReduce::Sum(
         tmp_storage, tmp_storage_bytes, data, out_d, size);
 
-    const cudaError_t code3 = cudaMalloc(&tmp_storage, tmp_storage_bytes);
+    const auto code3 = cudaMalloc(&tmp_storage, tmp_storage_bytes);
 
-    // do the reduction
-    const cudaError_t code4 = cub::DeviceReduce::Sum(
+    const auto code4 = cub::DeviceReduce::Sum(
         tmp_storage, tmp_storage_bytes, data, out_d, size);
 
-    // copy answer to host
     T* out_h = new T[1];
 
     cudaMemcpy(out_h, out_d, sizeof(T) * 1, cudaMemcpyDeviceToHost);
 
     const T out = out_h[0];
 
-    // tidy up
-    const cudaError_t code5 = cudaFree(tmp_storage);
+    const auto code5 = cudaFree(tmp_storage);
 
-    const cudaError_t code6 = cudaFree(out_d);
+    const auto code6 = cudaFree(out_d);
 
     delete[] out_h;
 
@@ -48,12 +42,12 @@ inline T reduce_sum(T* const data, const int size)
 
 } // namespace detail
 
-float reduce_sum(float* const data, const int size)
+float reduce_sum(const float* const data, const int size)
 {
     return detail::reduce_sum(data, size);
 }
 
-double reduce_sum(double* const data, const int size)
+double reduce_sum(const double* const data, const int size)
 {
     return detail::reduce_sum(data, size);
 }

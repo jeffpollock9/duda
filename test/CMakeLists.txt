@@ -2,7 +2,7 @@ find_package(Eigen3)
 
 add_library(catch SHARED catch/catch.cpp)
 
-set(DUDA_TESTS device_matrix blas eye fill)
+set(DUDA_TESTS device_matrix blas eye fill reduce_sum)
 
 foreach(test ${DUDA_TESTS})
     add_executable(${test} ${test}.cpp)

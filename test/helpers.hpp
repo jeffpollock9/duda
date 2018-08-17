@@ -6,6 +6,7 @@
 #include "blas.hpp"
 #include "copy.hpp"
 #include "random.hpp"
+#include "reduce_sum.hpp"
 #include "device_matrix.hpp"
 
 #include "Eigen/Dense"
