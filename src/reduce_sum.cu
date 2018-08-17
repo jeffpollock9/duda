@@ -25,17 +25,12 @@ inline T reduce_sum(const T* const data, const int size)
     const auto code4 = cub::DeviceReduce::Sum(
         tmp_storage, tmp_storage_bytes, data, out_d, size);
 
-    T* out_h = new T[1];
+    T out;
 
-    cudaMemcpy(out_h, out_d, sizeof(T) * 1, cudaMemcpyDeviceToHost);
-
-    const T out = out_h[0];
+    cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost);
 
     const auto code5 = cudaFree(tmp_storage);
-
     const auto code6 = cudaFree(out_d);
-
-    delete[] out_h;
 
     return out;
 }
