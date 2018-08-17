@@ -51,4 +51,4 @@ BENCHMARK_TEMPLATE(BM_device_axpy, double)->RANGE;
 
 #undef RANGE
 
-BENCHMARK_MAIN();
+BENCHMARK_MAIN()

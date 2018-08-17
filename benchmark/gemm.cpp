@@ -55,4 +55,4 @@ BENCHMARK_TEMPLATE(BM_device_gemm, double)->RANGE;
 
 #undef RANGE
 
-BENCHMARK_MAIN();
+BENCHMARK_MAIN()
