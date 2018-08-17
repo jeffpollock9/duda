@@ -2,6 +2,7 @@
 #define DUDA_TEST_HELPERS_HPP_
 
 #include "eye.hpp"
+#include "fill.hpp"
 #include "blas.hpp"
 #include "copy.hpp"
 #include "random.hpp"
