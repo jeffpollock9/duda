@@ -1,3 +1,5 @@
+#include "reduce_sum.hpp"
+
 #include "check_error.hpp"
 
 #include <cub/cub.cuh>
