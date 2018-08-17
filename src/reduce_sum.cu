@@ -1,3 +1,5 @@
+#include "check_error.hpp"
+
 #include <cub/cub.cuh>
 #include <cuda_runtime_api.h>
 
@@ -10,27 +12,31 @@ namespace detail
 template <typename T>
 inline T reduce_sum(const T* const data, const int size)
 {
+    using dr = cub::DeviceReduce;
+
     T* out_d          = NULL;
     void* tmp_storage = NULL;
 
-    const auto code1 = cudaMalloc((void**)&out_d, sizeof(T));
+    check_cuda_error(cudaMalloc((void**)&out_d, sizeof(T)));
 
     std::size_t tmp_storage_bytes = 0;
 
-    const auto code2 = cub::DeviceReduce::Sum(
-        tmp_storage, tmp_storage_bytes, data, out_d, size);
+    check_cuda_error(
+        dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
 
-    const auto code3 = cudaMalloc(&tmp_storage, tmp_storage_bytes);
+    check_cuda_error(cudaMalloc(&tmp_storage, tmp_storage_bytes));
 
-    const auto code4 = cub::DeviceReduce::Sum(
-        tmp_storage, tmp_storage_bytes, data, out_d, size);
+    check_cuda_error(
+        dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
+
+    check_cuda_error(cudaFree(tmp_storage));
 
     T out;
 
-    cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost);
+    check_cuda_error(
+        cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost));
 
-    const auto code5 = cudaFree(tmp_storage);
-    const auto code6 = cudaFree(out_d);
+    check_cuda_error(cudaFree(out_d));
 
     return out;
 }
