@@ -1,5 +1,7 @@
 #include "helpers.hpp"
 
+#include "eye.hpp"
+
 template <typename T>
 void test_eye(const int dim)
 {

@@ -1,5 +1,7 @@
 #include "helpers.hpp"
 
+#include "fill.hpp"
+
 template <typename T>
 void test_fill(const int rows, const int cols, const T value)
 {

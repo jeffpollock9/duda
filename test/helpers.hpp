@@ -1,13 +1,8 @@
 #ifndef DUDA_TEST_HELPERS_HPP_
 #define DUDA_TEST_HELPERS_HPP_
 
-#include "blas.hpp"
 #include "copy.hpp"
 #include "device_matrix.hpp"
-#include "eye.hpp"
-#include "fill.hpp"
-#include "random.hpp"
-#include "reduce_sum.hpp"
 
 #include "Eigen/Dense"
 #include "catch/catch.hpp"

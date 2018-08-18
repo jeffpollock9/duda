@@ -1,5 +1,8 @@
 #include "helpers.hpp"
 
+#include "random.hpp"
+#include "reduce_sum.hpp"
+
 template <typename T>
 void test_reduce_sum(const int rows, const int cols)
 {

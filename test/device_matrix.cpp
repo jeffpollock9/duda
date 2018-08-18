@@ -1,5 +1,7 @@
 #include "helpers.hpp"
 
+#include "random.hpp"
+
 TEST_CASE("default ctor", "[device_matrix]")
 {
     device_matrix<float> x;

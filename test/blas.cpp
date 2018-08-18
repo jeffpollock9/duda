@@ -1,5 +1,8 @@
 #include "helpers.hpp"
 
+#include "blas.hpp"
+#include "random.hpp"
+
 template <typename T>
 void test_axpy(const T alpha, const int rows, const int cols)
 {

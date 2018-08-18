@@ -1,15 +1,10 @@
+#include "helpers.hpp"
+
 #include "blas.hpp"
-#include "device_matrix.hpp"
 #include "random.hpp"
 
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"
-
-template <typename T>
-using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
-
-template <typename T>
-using device_matrix = duda::device_matrix<T>;
 
 template <typename T>
 static void BM_host_axpy(benchmark::State& state)
@@ -41,14 +36,10 @@ static void BM_device_axpy(benchmark::State& state)
     }
 }
 
-#define RANGE Range(8, 8 << 8)
+BENCHMARK_TEMPLATE(BM_host_axpy, float)->DUDA_BENCHMARK_RANGE;
+BENCHMARK_TEMPLATE(BM_host_axpy, double)->DUDA_BENCHMARK_RANGE;
 
-BENCHMARK_TEMPLATE(BM_host_axpy, float)->RANGE;
-BENCHMARK_TEMPLATE(BM_host_axpy, double)->RANGE;
-
-BENCHMARK_TEMPLATE(BM_device_axpy, float)->RANGE;
-BENCHMARK_TEMPLATE(BM_device_axpy, double)->RANGE;
-
-#undef RANGE
+BENCHMARK_TEMPLATE(BM_device_axpy, float)->DUDA_BENCHMARK_RANGE;
+BENCHMARK_TEMPLATE(BM_device_axpy, double)->DUDA_BENCHMARK_RANGE;
 
 BENCHMARK_MAIN()
