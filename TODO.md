@@ -1,7 +1,7 @@
 # duda TODO list
 
 - manage dependencies via cmake(catch, google-benchmark, Eigen, cub)
-- add cub, and add methods for reduction
+- add more cub reduction stuff + benchmarks
 - tidy up directories into modules, e.g. random, blas, kernels
 - add all cuBLAS routines
 - add all cuSOLVER routines
@@ -13,4 +13,3 @@
 - better logic for the number of threads per block and number of blocks, see
   e.g. https://stackoverflow.com/questions/9985912/how-do-i-choose-grid-and-block-dimensions-for-cuda-kernels
 - see if we can use cub's CachingDeviceAllocator
-- wrappers around cuda stuff which throws after checking code, e.g cudaMemcpy
