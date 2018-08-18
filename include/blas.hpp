@@ -40,7 +40,7 @@ inline void axpy(const T alpha, const device_matrix<T>& x, device_matrix<T>& y)
                                                 y.data(),
                                                 incy);
 
-    check_cublas_error(code);
+    check_error(code);
 }
 
 template <typename T>
@@ -95,7 +95,7 @@ inline void gemm(const op op_a,
                                   c.data(),
                                   ldc);
 
-    check_cublas_error(code);
+    check_error(code);
 }
 
 template <typename T>
@@ -125,7 +125,7 @@ inline void dot(const device_matrix<T>& x, const device_matrix<T>& y, T& result)
                                                 incy,
                                                 &result);
 
-    check_cublas_error(code);
+    check_error(code);
 }
 
 } // namespace duda

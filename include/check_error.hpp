@@ -13,7 +13,7 @@
 namespace duda
 {
 
-inline void check_cuda_error(const cudaError_t code)
+inline void check_error(const cudaError_t code)
 {
     if (DUDA_UNLIKELY(code != cudaSuccess))
     {
@@ -21,7 +21,7 @@ inline void check_cuda_error(const cudaError_t code)
     }
 }
 
-inline void check_cublas_error(const cublasStatus_t code)
+inline void check_error(const cublasStatus_t code)
 {
     if (DUDA_UNLIKELY(code != CUBLAS_STATUS_SUCCESS))
     {
@@ -29,7 +29,7 @@ inline void check_cublas_error(const cublasStatus_t code)
     }
 }
 
-inline void check_curand_error(const curandStatus_t code)
+inline void check_error(const curandStatus_t code)
 {
     if (DUDA_UNLIKELY(code != CURAND_STATUS_SUCCESS))
     {

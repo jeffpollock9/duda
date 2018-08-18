@@ -16,34 +16,36 @@ inline T reduce_sum(const T* const data, const int size)
 {
     using dr = cub::DeviceReduce;
 
-    T* out_d          = NULL;
-    void* tmp_storage = NULL;
+    T* out_d          = nullptr;
+    void* tmp_storage = nullptr;
 
-    check_cuda_error(cudaMalloc((void**)&out_d, sizeof(T)));
+    check_error(cudaMalloc((void**)&out_d, sizeof(T)));
 
     std::size_t tmp_storage_bytes = 0;
 
-    check_cuda_error(
-        dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
+    check_error(dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
 
-    check_cuda_error(cudaMalloc(&tmp_storage, tmp_storage_bytes));
+    check_error(cudaMalloc(&tmp_storage, tmp_storage_bytes));
 
-    check_cuda_error(
-        dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
+    check_error(dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
 
-    check_cuda_error(cudaFree(tmp_storage));
+    check_error(cudaFree(tmp_storage));
 
     T out;
 
-    check_cuda_error(
-        cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost));
+    check_error(cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost));
 
-    check_cuda_error(cudaFree(out_d));
+    check_error(cudaFree(out_d));
 
     return out;
 }
 
 } // namespace detail
+
+int reduce_sum(const int* const data, const int size)
+{
+    return detail::reduce_sum(data, size);
+}
 
 float reduce_sum(const float* const data, const int size)
 {

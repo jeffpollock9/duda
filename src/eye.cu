@@ -46,6 +46,11 @@ inline void eye(T* const data, const int dim)
 
 } // namespace detail
 
+void eye(int* const data, const int dim)
+{
+    detail::eye(data, dim);
+}
+
 void eye(float* const data, const int dim)
 {
     detail::eye(data, dim);

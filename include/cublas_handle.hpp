@@ -12,12 +12,12 @@ struct cublas_handle_wrapper
 {
     cublas_handle_wrapper()
     {
-        check_cublas_error(cublasCreate(&handle_));
+        check_error(cublasCreate(&handle_));
     }
 
     ~cublas_handle_wrapper()
     {
-        check_cublas_error(cublasDestroy(handle_));
+        check_error(cublasDestroy(handle_));
     }
 
     cublasHandle_t& value()

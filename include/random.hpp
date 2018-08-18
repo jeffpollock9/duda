@@ -20,7 +20,7 @@ inline void fill_random_uniform(T* const data, const int size)
                                                 data,
                                                 size);
 
-    check_curand_error(code);
+    check_error(code);
 }
 
 template <typename T>
@@ -37,7 +37,7 @@ inline void fill_random_normal(T* const data,
                                                 mean,
                                                 stddev);
 
-    check_curand_error(code);
+    check_error(code);
 }
 
 template <typename T>
@@ -54,7 +54,7 @@ inline void fill_random_log_normal(T* const data,
                                                 mean,
                                                 stddev);
 
-    check_curand_error(code);
+    check_error(code);
 }
 
 inline void fill_random_poisson(unsigned int* const data,
@@ -64,7 +64,7 @@ inline void fill_random_poisson(unsigned int* const data,
     const auto code =
         curandGeneratePoisson(curand_gen().value(), data, size, lambda);
 
-    check_curand_error(code);
+    check_error(code);
 }
 
 template <typename T>

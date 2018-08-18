@@ -12,13 +12,12 @@ struct curand_generator_wrapper
 {
     curand_generator_wrapper()
     {
-        check_curand_error(
-            curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT));
+        check_error(curandCreateGenerator(&gen_, CURAND_RNG_PSEUDO_DEFAULT));
     }
 
     ~curand_generator_wrapper()
     {
-        check_curand_error(curandDestroyGenerator(gen_));
+        check_error(curandDestroyGenerator(gen_));
     }
 
     curandGenerator_t& value()
@@ -29,8 +28,8 @@ struct curand_generator_wrapper
     void seed(const unsigned long long seed   = 0xdeadbeef,
               const unsigned long long offset = 0)
     {
-        check_curand_error(curandSetPseudoRandomGeneratorSeed(gen_, seed));
-        check_curand_error(curandSetGeneratorOffset(gen_, offset));
+        check_error(curandSetPseudoRandomGeneratorSeed(gen_, seed));
+        check_error(curandSetGeneratorOffset(gen_, offset));
     }
 
 private:

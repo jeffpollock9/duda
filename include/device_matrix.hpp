@@ -17,19 +17,18 @@ struct device_matrix
 
     device_matrix(const int rows, const int cols) : rows_(rows), cols_(cols)
     {
-        check_cuda_error(cudaMalloc((void**)&data_, bytes()));
+        check_error(cudaMalloc((void**)&data_, bytes()));
     }
 
     device_matrix(const T* const host, const int rows, const int cols)
         : device_matrix(rows, cols)
     {
-        check_cuda_error(
-            cudaMemcpy(data_, host, bytes(), cudaMemcpyHostToDevice));
+        check_error(cudaMemcpy(data_, host, bytes(), cudaMemcpyHostToDevice));
     }
 
     device_matrix(const device_matrix& x) : device_matrix(x.rows(), x.cols())
     {
-        check_cuda_error(
+        check_error(
             cudaMemcpy(data_, x.data_, bytes(), cudaMemcpyDeviceToDevice));
     }
 
@@ -60,7 +59,7 @@ struct device_matrix
 
     ~device_matrix()
     {
-        check_cuda_error(cudaFree(data_));
+        check_error(cudaFree(data_));
     }
 
     int rows() const
