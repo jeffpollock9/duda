@@ -1,4 +1,4 @@
-find_package(Eigen3)
+find_package(Eigen3 REQUIRED)
 
 add_library(catch SHARED catch/catch.cpp)
 

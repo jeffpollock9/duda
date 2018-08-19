@@ -1,6 +1,6 @@
-find_package(benchmark)
-find_package(Eigen3)
-find_package(OpenMP)
+find_package(benchmark REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(OpenMP REQUIRED)
 
 set(DUDA_BENCHMARKS axpy gemm reduce_sum)
 
