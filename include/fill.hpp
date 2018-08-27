@@ -12,8 +12,8 @@ void fill(float* const data, const int size, const float value);
 
 void fill(double* const data, const int size, const double value);
 
-template <typename T>
-inline void fill(device_matrix<T>& x, const T value)
+template <template <typename> class Device, typename T>
+inline void fill(Device<T>& x, const T value)
 {
     fill(x.data(), x.size(), value);
 }

@@ -12,8 +12,8 @@ float reduce_sum(const float* const data, const int size);
 
 double reduce_sum(const double* const data, const int size);
 
-template <typename T>
-inline T reduce_sum(const device_matrix<T>& x)
+template <template <typename> class Device, typename T>
+inline T reduce_sum(const Device<T>& x)
 {
     return reduce_sum(x.data(), x.size());
 }

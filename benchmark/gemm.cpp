@@ -4,36 +4,38 @@
 #include "random.hpp"
 
 template <typename T>
+constexpr T alpha = 0.001;
+
+template <typename T>
+constexpr T beta = 0.02;
+
+template <typename T>
 static void BM_host_gemm(benchmark::State& state)
 {
-    const int n   = state.range(0);
-    const T alpha = 0.001;
-    const T beta  = 0.02;
+    const int n = state.range(0);
 
-    host_matrix<T> a = host_matrix<T>::Random(n, n);
-    host_matrix<T> b = host_matrix<T>::Random(n, n);
-    host_matrix<T> c = host_matrix<T>::Random(n, n);
+    const host_matrix<T> A = host_matrix<T>::Random(n, n);
+    const host_matrix<T> B = host_matrix<T>::Random(n, n);
+    host_matrix<T> C       = host_matrix<T>::Random(n, n);
 
     for (auto _ : state)
     {
-        c = alpha * a * b + beta * c;
+        C = alpha<T> * A * B + beta<T> * C;
     }
 }
 
 template <typename T>
 static void BM_device_gemm(benchmark::State& state)
 {
-    const int n   = state.range(0);
-    const T alpha = 0.001;
-    const T beta  = 0.02;
+    const int n = state.range(0);
 
-    device_matrix<T> a = duda::random_uniform<T>(n, n);
-    device_matrix<T> b = duda::random_uniform<T>(n, n);
-    device_matrix<T> c = duda::random_uniform<T>(n, n);
+    const auto A = duda::random_uniform<T>(n, n);
+    const auto B = duda::random_uniform<T>(n, n);
+    auto C       = duda::random_uniform<T>(n, n);
 
     for (auto _ : state)
     {
-        gemm(duda::op::none, duda::op::none, alpha, a, b, beta, c);
+        gemm(duda::op::none, duda::op::none, alpha<T>, A, B, beta<T>, C);
     }
 }
 

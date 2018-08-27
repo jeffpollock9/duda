@@ -7,17 +7,19 @@
 #include "benchmark/benchmark.h"
 
 template <typename T>
+constexpr T a = 0.001;
+
+template <typename T>
 static void BM_host_axpy(benchmark::State& state)
 {
     const int n = state.range(0);
-    const T a   = 0.001;
 
-    host_matrix<T> x = host_matrix<T>::Random(n, n);
-    host_matrix<T> y = host_matrix<T>::Random(n, n);
+    const host_vector<T> x = host_vector<T>::Random(n);
+    host_vector<T> y       = host_vector<T>::Random(n);
 
     for (auto _ : state)
     {
-        y = a * x + y;
+        y = a<T> * x + y;
     }
 }
 
@@ -25,14 +27,13 @@ template <typename T>
 static void BM_device_axpy(benchmark::State& state)
 {
     const int n = state.range(0);
-    const T a   = 0.001;
 
-    device_matrix<T> x = duda::random_uniform<T>(n, n);
-    device_matrix<T> y = duda::random_uniform<T>(n, n);
+    const auto x = duda::random_uniform<T>(n);
+    auto y       = duda::random_uniform<T>(n);
 
     for (auto _ : state)
     {
-        axpy(a, x, y);
+        axpy(a<T>, x, y);
     }
 }
 

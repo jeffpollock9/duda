@@ -8,11 +8,11 @@ static void BM_host_reduce_sum(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    host_matrix<T> x = host_matrix<T>::Random(n, n);
+    host_matrix<T> X = host_matrix<T>::Random(n, n);
 
     for (auto _ : state)
     {
-        const T sum = x.sum();
+        const T sum = X.sum();
 
         benchmark::DoNotOptimize(sum);
     }
@@ -23,11 +23,11 @@ static void BM_device_reduce_sum(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    device_matrix<T> x = duda::random_uniform<T>(n, n);
+    device_matrix<T> X = duda::random_uniform<T>(n, n);
 
     for (auto _ : state)
     {
-        const T sum = reduce_sum(x);
+        const T sum = reduce_sum(X);
 
         benchmark::DoNotOptimize(sum);
     }

@@ -2,6 +2,7 @@
 #define DUDA_DIM_HPP_
 
 #include "device_matrix.hpp"
+#include "device_vector.hpp"
 #include "op.hpp"
 
 #include <string>
@@ -18,6 +19,16 @@ struct dim
     template <typename T>
     dim(const device_matrix<T>& x, const op f = op::none)
         : rows(x.rows()), cols(x.cols())
+    {
+        if (f != op::none)
+        {
+            std::swap(rows, cols);
+        }
+    }
+
+    template <typename T>
+    dim(const device_vector<T>& x, const op f = op::none)
+        : rows(x.size()), cols(1)
     {
         if (f != op::none)
         {
