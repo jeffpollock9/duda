@@ -1,6 +1,8 @@
 #ifndef DUDA_DETAIL_HPP_
 #define DUDA_DETAIL_HPP_
 
+#include <utility>
+
 namespace duda
 {
 
@@ -17,7 +19,7 @@ struct overload<float>
     template <typename Single, typename Double, typename... Args>
     static auto call(const Single f, const Double, Args&&... args)
     {
-        return f(args...);
+        return f(std::forward<Args>(args)...);
     }
 };
 
@@ -25,9 +27,9 @@ template <>
 struct overload<double>
 {
     template <typename Single, typename Double, typename... Args>
-    static auto call(const Single, const Double g, Args&&... args)
+    static auto call(const Single, const Double f, Args&&... args)
     {
-        return g(args...);
+        return f(std::forward<Args>(args)...);
     }
 };
 
