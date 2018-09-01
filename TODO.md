@@ -17,3 +17,5 @@
 - allow mixing of matrix and vector in blas
 - add CI on github with coverage etc
 - consider moving to google test
+- fix project layout, see
+  e.g. https://www.reddit.com/r/cpp/comments/996q8o/prepare_thy_pitchforks_a_de_facto_standard/
