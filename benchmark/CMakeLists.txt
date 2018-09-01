@@ -1,3 +1,5 @@
+include(add_basic_warnings)
+
 find_package(benchmark REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(OpenMP REQUIRED)
@@ -8,7 +10,5 @@ foreach(benchmark ${DUDA_BENCHMARKS})
     add_executable(benchmark_${benchmark} ${benchmark}.cpp)
     target_link_libraries(benchmark_${benchmark}
         duda benchmark::benchmark Eigen3::Eigen OpenMP::OpenMP_CXX)
-    # TODO: these flags are not portable
-    target_compile_options(benchmark_${benchmark} PRIVATE
-        -Wall -Wextra -Wpedantic -Wshadow)
+    add_basic_warnings(benchmark_${benchmark})
 endforeach()
