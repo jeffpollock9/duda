@@ -19,3 +19,4 @@
 - consider moving to google test
 - fix project layout, see
   e.g. https://www.reddit.com/r/cpp/comments/996q8o/prepare_thy_pitchforks_a_de_facto_standard/
+- use thrust instead of cub? (think thrust now uses cub anyway)
