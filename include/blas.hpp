@@ -5,6 +5,7 @@
 #include "detail.hpp"
 #include "device_matrix.hpp"
 #include "dim.hpp"
+#include "inc.hpp"
 #include "macros.hpp"
 #include "op.hpp"
 
