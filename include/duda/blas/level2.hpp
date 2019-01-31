@@ -53,6 +53,8 @@ inline void gemv(const op op_a,
     const auto code =
         detail::overload<T>::call(cublasSgemv,
                                   cublasDgemv,
+                                  cublasCgemv,
+                                  cublasZgemv,
                                   cublas_handle().value(),
                                   static_cast<cublasOperation_t>(op_a),
                                   m,

@@ -17,6 +17,8 @@ inline void fill_random_uniform(T* const data, const int size)
 {
     const auto code = detail::overload<T>::call(curandGenerateUniform,
                                                 curandGenerateUniformDouble,
+                                                detail::not_callable{},
+                                                detail::not_callable{},
                                                 curand_gen().value(),
                                                 data,
                                                 size);
@@ -32,6 +34,8 @@ inline void fill_random_normal(T* const data,
 {
     const auto code = detail::overload<T>::call(curandGenerateNormal,
                                                 curandGenerateNormalDouble,
+                                                detail::not_callable{},
+                                                detail::not_callable{},
                                                 curand_gen().value(),
                                                 data,
                                                 size,
@@ -49,6 +53,8 @@ inline void fill_random_log_normal(T* const data,
 {
     const auto code = detail::overload<T>::call(curandGenerateLogNormal,
                                                 curandGenerateLogNormalDouble,
+                                                detail::not_callable{},
+                                                detail::not_callable{},
                                                 curand_gen().value(),
                                                 data,
                                                 size,

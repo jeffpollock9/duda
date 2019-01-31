@@ -1,7 +1,9 @@
 #ifndef DUDA_COPY_HPP_
 #define DUDA_COPY_HPP_
 
-#include <duda/device_matrix.hpp>
+#include <duda/check_error.hpp>
+
+#include <cublas_v2.h>
 
 namespace duda
 {

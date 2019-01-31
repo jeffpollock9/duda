@@ -50,6 +50,8 @@ inline void gemm(const op op_a,
     const auto code =
         detail::overload<T>::call(cublasSgemm,
                                   cublasDgemm,
+                                  cublasCgemm,
+                                  cublasZgemm,
                                   cublas_handle().value(),
                                   static_cast<cublasOperation_t>(op_a),
                                   static_cast<cublasOperation_t>(op_b),

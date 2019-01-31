@@ -3,11 +3,11 @@
 namespace duda
 {
 
-namespace kernel
+namespace detail
 {
 
 template <typename T>
-__global__ void fill(T* const data, const int size, const T value)
+__global__ void fill_kernel(T* const data, const int size, const T value)
 {
     const int i = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -16,11 +16,6 @@ __global__ void fill(T* const data, const int size, const T value)
         data[i] = value;
     }
 }
-
-} // namespace kernel
-
-namespace detail
-{
 
 template <typename T>
 inline void fill(T* const data, const int size, const T value)
@@ -31,7 +26,7 @@ inline void fill(T* const data, const int size, const T value)
     const dim3 blocks(n);
     const dim3 block_dim(d);
 
-    kernel::fill<T><<<blocks, block_dim>>>(data, size, value);
+    fill_kernel<<<blocks, block_dim>>>(data, size, value);
 }
 
 } // namespace detail

@@ -3,11 +3,11 @@
 namespace duda
 {
 
-namespace kernel
+namespace detail
 {
 
 template <typename T>
-__global__ void eye(T* const data, const int dim)
+__global__ void eye_kernel(T* const data, const int dim)
 {
     const int i = blockDim.x * blockIdx.x + threadIdx.x;
     const int j = blockDim.y * blockIdx.y + threadIdx.y;
@@ -27,11 +27,6 @@ __global__ void eye(T* const data, const int dim)
     }
 }
 
-} // namespace kernel
-
-namespace detail
-{
-
 template <typename T>
 inline void eye(T* const data, const int dim)
 {
@@ -41,7 +36,7 @@ inline void eye(T* const data, const int dim)
     const dim3 blocks(n, n);
     const dim3 block_dim(d, d);
 
-    kernel::eye<T><<<blocks, block_dim>>>(data, dim);
+    eye_kernel<<<blocks, block_dim>>>(data, dim);
 }
 
 } // namespace detail

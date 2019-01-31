@@ -11,7 +11,7 @@ void test_amax(const int n)
 
     int result;
 
-    amax(x_d, result);
+    iamax(x_d, result);
 
     typename host_vector<T>::Index index;
 
@@ -34,7 +34,7 @@ void test_amin(const int n)
 
     int result;
 
-    amin(x_d, result);
+    iamin(x_d, result);
 
     typename host_vector<T>::Index index;
 
@@ -113,6 +113,25 @@ void test_dot(const int n)
 
 TEST_CASE("dot", "[device_vector][blas]")
 {
-    test_dot<double>(256);
+    test_dot<float>(256);
     test_dot<double>(16);
+}
+
+template <typename T>
+void test_nrm2(const int n)
+{
+    auto x_d = duda::random_normal<T>(n);
+    auto x_h = copy(x_d);
+
+    T result;
+
+    nrm2(x_d, result);
+
+    REQUIRE(result == Approx(x_h.norm()));
+}
+
+TEST_CASE("nrm2", "[device_vector][blas]")
+{
+    test_nrm2<float>(32);
+    test_nrm2<double>(128);
 }
