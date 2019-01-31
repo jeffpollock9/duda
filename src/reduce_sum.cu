@@ -1,6 +1,5 @@
-#include "reduce_sum.hpp"
-
-#include "check_error.hpp"
+#include <duda/reduce_sum.hpp>
+#include <duda/check_error.hpp>
 
 #include <cub/cub.cuh>
 #include <cuda_runtime_api.h>

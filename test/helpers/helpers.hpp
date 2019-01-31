@@ -1,9 +1,9 @@
 #ifndef DUDA_TEST_HELPERS_HPP_
 #define DUDA_TEST_HELPERS_HPP_
 
-#include "copy.hpp"
-#include "device_matrix.hpp"
-#include "device_vector.hpp"
+#include <duda/copy.hpp>
+#include <duda/device_matrix.hpp>
+#include <duda/device_vector.hpp>
 
 #include "Eigen/Dense"
 #include "catch/catch.hpp"

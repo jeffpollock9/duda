@@ -1,7 +1,7 @@
 #ifndef DUDA_REDUCE_SUM_HPP_
 #define DUDA_REDUCE_SUM_HPP_
 
-#include "device_matrix.hpp"
+#include <duda/device_matrix.hpp>
 
 namespace duda
 {

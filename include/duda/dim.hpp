@@ -1,9 +1,9 @@
 #ifndef DUDA_DIM_HPP_
 #define DUDA_DIM_HPP_
 
-#include "device_matrix.hpp"
-#include "device_vector.hpp"
-#include "op.hpp"
+#include <duda/device_matrix.hpp>
+#include <duda/device_vector.hpp>
+#include <duda/op.hpp>
 
 #include <string>
 #include <utility>

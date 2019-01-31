@@ -1,7 +1,7 @@
-#include "helpers.hpp"
+#include <helpers/helpers.hpp>
 
-#include "random.hpp"
-#include "reduce_sum.hpp"
+#include <duda/random.hpp>
+#include <duda/reduce_sum.hpp>
 
 template <typename T>
 void test_reduce_sum(const int rows, const int cols)

@@ -1,6 +1,6 @@
-#include "helpers.hpp"
+#include <helpers/helpers.hpp>
 
-#include "fill.hpp"
+#include <duda/fill.hpp>
 
 template <typename T>
 void test_fill(const int rows, const int cols, const T value)

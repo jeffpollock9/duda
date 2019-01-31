@@ -1,7 +1,7 @@
 #ifndef DEVICE_MATRIX_HPP_
 #define DEVICE_MATRIX_HPP_
 
-#include "check_error.hpp"
+#include <duda/check_error.hpp>
 
 #include <cuda_runtime_api.h>
 

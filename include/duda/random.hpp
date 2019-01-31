@@ -1,11 +1,11 @@
 #ifndef DUDA_RANDOM_HPP_
 #define DUDA_RANDOM_HPP_
 
-#include "check_error.hpp"
-#include "curand_generator.hpp"
-#include "detail.hpp"
-#include "device_matrix.hpp"
-#include "device_vector.hpp"
+#include <duda/check_error.hpp>
+#include <duda/curand_generator.hpp>
+#include <duda/detail.hpp>
+#include <duda/device_matrix.hpp>
+#include <duda/device_vector.hpp>
 
 #include <curand.h>
 

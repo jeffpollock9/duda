@@ -1,8 +1,8 @@
 #ifndef DUDA_BENCHMARK_HELPERS_HPP_
 #define DUDA_BENCHMARK_HELPERS_HPP_
 
-#include "device_matrix.hpp"
-#include "device_vector.hpp"
+#include <duda/device_matrix.hpp>
+#include <duda/device_vector.hpp>
 
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"

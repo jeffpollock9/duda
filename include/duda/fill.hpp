@@ -1,7 +1,7 @@
 #ifndef DUDA_FILL_HPP_
 #define DUDA_FILL_HPP_
 
-#include "device_matrix.hpp"
+#include <duda/device_matrix.hpp>
 
 namespace duda
 {

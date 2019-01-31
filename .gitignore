@@ -5,8 +5,9 @@
 # Cmake
 compile_commands.json
 
-# cquery
+# cquery/ccls
 .cquery_cached_index
+.ccls-cache
 
 # Prerequisites
 *.d

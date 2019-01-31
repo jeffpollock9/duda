@@ -1,7 +1,7 @@
-#include "../helpers.hpp"
+#include <helpers/helpers.hpp>
 
-#include "blas.hpp"
-#include "random.hpp"
+#include <duda/blas.hpp>
+#include <duda/random.hpp>
 
 template <typename T>
 void test_gemv(const T alpha, const T beta, const int m, const int n)

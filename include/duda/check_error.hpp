@@ -1,7 +1,7 @@
 #ifndef DUDA_CHECK_ERROR_HPP_
 #define DUDA_CHECK_ERROR_HPP_
 
-#include "macros.hpp"
+#include <duda/macros.hpp>
 
 #include <cublas_v2.h>
 #include <cuda_runtime_api.h>

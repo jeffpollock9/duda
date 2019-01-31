@@ -1,7 +1,7 @@
 #include "helpers.hpp"
 
-#include "blas.hpp"
-#include "random.hpp"
+#include <duda/blas.hpp>
+#include <duda/random.hpp>
 
 template <typename T>
 constexpr T alpha = 0.001;

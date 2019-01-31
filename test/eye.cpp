@@ -1,6 +1,6 @@
-#include "helpers.hpp"
+#include <helpers/helpers.hpp>
 
-#include "eye.hpp"
+#include <duda/eye.hpp>
 
 template <typename T>
 void test_eye(const int dim)

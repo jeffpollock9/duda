@@ -1,7 +1,7 @@
 #ifndef DUDA_CUBLAS_HANDLE_HPP_
 #define DUDA_CUBLAS_HANDLE_HPP_
 
-#include "check_error.hpp"
+#include <duda/check_error.hpp>
 
 #include <cublas_v2.h>
 

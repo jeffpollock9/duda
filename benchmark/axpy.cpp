@@ -1,7 +1,7 @@
 #include "helpers.hpp"
 
-#include "blas.hpp"
-#include "random.hpp"
+#include <duda/blas.hpp>
+#include <duda/random.hpp>
 
 #include "Eigen/Dense"
 #include "benchmark/benchmark.h"

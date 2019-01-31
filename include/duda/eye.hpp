@@ -1,7 +1,7 @@
 #ifndef DUDA_EYE_HPP_
 #define DUDA_EYE_HPP_
 
-#include "device_matrix.hpp"
+#include <duda/device_matrix.hpp>
 
 namespace duda
 {

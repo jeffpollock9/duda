@@ -1,7 +1,7 @@
 #include "helpers.hpp"
 
-#include "random.hpp"
-#include "reduce_sum.hpp"
+#include <duda/random.hpp>
+#include <duda/reduce_sum.hpp>
 
 template <typename T>
 static void BM_host_reduce_sum(benchmark::State& state)

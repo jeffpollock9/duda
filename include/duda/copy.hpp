@@ -1,4 +1,7 @@
-#include "device_matrix.hpp"
+#ifndef DUDA_COPY_HPP_
+#define DUDA_COPY_HPP_
+
+#include <duda/device_matrix.hpp>
 
 namespace duda
 {
@@ -13,3 +16,5 @@ inline void copy(const Device<T>& device, T* const host)
 }
 
 } // namespace duda
+
+#endif /* DUDA_COPY_HPP_ */

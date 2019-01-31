@@ -1,6 +1,15 @@
 #ifndef DUDA_BLAS_LEVEL3_HPP_
 #define DUDA_BLAS_LEVEL3_HPP_
 
+#include <duda/cublas_handle.hpp>
+#include <duda/detail.hpp>
+#include <duda/device_matrix.hpp>
+#include <duda/dim.hpp>
+#include <duda/macros.hpp>
+#include <duda/op.hpp>
+
+#include <cublas_v2.h>
+
 namespace duda
 {
 

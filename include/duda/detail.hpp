@@ -1,5 +1,5 @@
-#ifndef DUDA_DETAIL_HPP_
-#define DUDA_DETAIL_HPP_
+#ifndef DUDA_BLAS_DETAIL_HPP_
+#define DUDA_BLAS_DETAIL_HPP_
 
 #include <utility>
 
@@ -37,4 +37,4 @@ struct overload<double>
 
 } // namespace duda
 
-#endif /* DUDA_DETAIL_HPP_ */
+#endif /* DUDA_BLAS_DETAIL_HPP_ */

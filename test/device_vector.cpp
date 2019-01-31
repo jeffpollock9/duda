@@ -1,6 +1,6 @@
-#include "helpers.hpp"
+#include <helpers/helpers.hpp>
 
-#include "random.hpp"
+#include <duda/random.hpp>
 
 TEST_CASE("default ctor", "[device_vector]")
 {
