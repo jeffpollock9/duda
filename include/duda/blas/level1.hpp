@@ -120,6 +120,32 @@ inline void nrm2(const device_vector<T>& x, T& result)
     check_error(code);
 }
 
+template <typename T>
+inline void rot(device_vector<T>& x, device_vector<T>& y, const T c, const T s)
+{
+    const int n = x.size();
+
+    if (DUDA_UNLIKELY(n != y.size()))
+    {
+        throw std::runtime_error("can't rot with sizes " + std::to_string(n) +
+                                 " and " + std::to_string(y.size()));
+    }
+
+    const auto fn = detail::overload<T>::fn(
+        cublasSrot, cublasDrot, detail::not_callable{}, detail::not_callable{});
+
+    const auto code = fn(cublas_handle().value(),
+                         n,
+                         x.data(),
+                         detail::incx(),
+                         y.data(),
+                         detail::incy(),
+                         &c,
+                         &s);
+
+    check_error(code);
+}
+
 } // namespace duda
 
 #endif /* DUDA_BLAS_LEVEL1_HPP_ */

@@ -135,3 +135,27 @@ TEST_CASE("nrm2", "[device_vector][blas]")
     test_nrm2<float>(32);
     test_nrm2<double>(128);
 }
+
+template <typename T>
+void test_rot(const int n, const T c, const T s)
+{
+    auto x_d = duda::random_uniform<T>(n);
+    auto y_d = duda::random_uniform<T>(n);
+
+    auto x_h = copy(x_d);
+    auto y_h = copy(y_d);
+
+    rot(x_d, y_d, c, s);
+
+    auto x_ans_h = c * x_h + s * y_h;
+    auto y_ans_h = -s * x_h + c * y_h;
+
+    REQUIRE(x_ans_h.isApprox(copy(x_d)));
+    REQUIRE(y_ans_h.isApprox(copy(y_d)));
+}
+
+TEST_CASE("rot", "[device_vector][blas]")
+{
+    test_rot<float>(32, 3.14, 7.5);
+    test_rot<double>(128, 0.666, -1.9);
+}
