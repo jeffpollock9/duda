@@ -11,7 +11,7 @@ void test_amax(const int n)
 
     int result;
 
-    iamax(x_d, result);
+    duda::iamax(x_d, result);
 
     typename host_vector<T>::Index index;
 
@@ -34,7 +34,7 @@ void test_amin(const int n)
 
     int result;
 
-    iamin(x_d, result);
+    duda::iamin(x_d, result);
 
     typename host_vector<T>::Index index;
 
@@ -57,7 +57,7 @@ void test_asum(const Dim... dim)
 
     T result;
 
-    asum(x_d, result);
+    duda::asum(x_d, result);
 
     REQUIRE(result == Approx(x_h.cwiseAbs().sum()));
 }
@@ -80,7 +80,7 @@ void test_axpy(const T alpha, const Dim... dim)
     auto x_h = copy(x_d);
     auto y_h = copy(y_d);
 
-    axpy(alpha, x_d, y_d);
+    duda::axpy(alpha, x_d, y_d);
     y_h = alpha * x_h + y_h;
 
     REQUIRE(y_h.isApprox(copy(y_d)));
@@ -106,7 +106,7 @@ void test_dot(const int n)
 
     T result;
 
-    dot(x_d, y_d, result);
+    duda::dot(x_d, y_d, result);
 
     REQUIRE(result == Approx(x_h.cwiseProduct(y_h).sum()));
 }
@@ -125,7 +125,7 @@ void test_nrm2(const int n)
 
     T result;
 
-    nrm2(x_d, result);
+    duda::nrm2(x_d, result);
 
     REQUIRE(result == Approx(x_h.norm()));
 }
@@ -145,7 +145,7 @@ void test_rot(const int n, const T c, const T s)
     auto x_h = copy(x_d);
     auto y_h = copy(y_d);
 
-    rot(x_d, y_d, c, s);
+    duda::rot(x_d, y_d, c, s);
 
     auto x_ans_h = c * x_h + s * y_h;
     auto y_ans_h = -s * x_h + c * y_h;
@@ -158,4 +158,25 @@ TEST_CASE("rot", "[device_vector][blas]")
 {
     test_rot<float>(32, 3.14, 7.5);
     test_rot<double>(128, 0.666, -1.9);
+}
+
+template <typename T, typename... Dim>
+void test_scal(const T alpha, const Dim... dim)
+{
+    auto x_d = duda::random_uniform<T>(dim...);
+    auto x_h = copy(x_d);
+
+    duda::scal(alpha, x_d);
+    x_h = alpha * x_h;
+
+    REQUIRE(x_h.isApprox(copy(x_d)));
+}
+
+TEST_CASE("scal", "[device_vector][device_matrix][blas]")
+{
+    test_scal<float>(3.14, 32, 10);
+    test_scal<double>(0.666, 128, 2);
+
+    test_scal<float>(3.14, 16, 4);
+    test_scal<double>(0.19, 8, 2);
 }

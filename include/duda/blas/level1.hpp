@@ -146,6 +146,18 @@ inline void rot(device_vector<T>& x, device_vector<T>& y, const T c, const T s)
     check_error(code);
 }
 
+template <template <typename> class DeviceStorage, typename T>
+inline void scal(const T alpha, DeviceStorage<T>& x)
+{
+    const auto fn = detail::overload<T>::fn(
+        cublasSscal, cublasDscal, cublasCscal, cublasZscal);
+
+    const auto code =
+        fn(cublas_handle().value(), x.size(), &alpha, x.data(), detail::incx());
+
+    check_error(code);
+}
+
 } // namespace duda
 
 #endif /* DUDA_BLAS_LEVEL1_HPP_ */
