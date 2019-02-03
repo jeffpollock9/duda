@@ -8,8 +8,8 @@
 namespace duda
 {
 
-template <template <typename> class Device, typename T>
-inline void copy(const Device<T>& device, T* const host)
+template <template <typename> class DeviceStorage, typename T>
+inline void copy(const DeviceStorage<T>& device, T* const host)
 {
     const auto code =
         cudaMemcpy(host, device.data(), device.bytes(), cudaMemcpyDeviceToHost);

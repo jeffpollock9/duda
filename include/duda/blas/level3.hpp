@@ -2,7 +2,8 @@
 #define DUDA_BLAS_LEVEL3_HPP_
 
 #include <duda/cublas_handle.hpp>
-#include <duda/detail.hpp>
+#include <duda/detail/inc.hpp>
+#include <duda/detail/overload.hpp>
 #include <duda/device_matrix.hpp>
 #include <duda/dim.hpp>
 #include <duda/macros.hpp>
@@ -47,25 +48,23 @@ inline void gemm(const op op_a,
     const int ldb = b.rows();
     const int ldc = c.rows();
 
-    const auto code =
-        detail::overload<T>::call(cublasSgemm,
-                                  cublasDgemm,
-                                  cublasCgemm,
-                                  cublasZgemm,
-                                  cublas_handle().value(),
-                                  static_cast<cublasOperation_t>(op_a),
-                                  static_cast<cublasOperation_t>(op_b),
-                                  m,
-                                  n,
-                                  k,
-                                  &alpha,
-                                  a.data(),
-                                  lda,
-                                  b.data(),
-                                  ldb,
-                                  &beta,
-                                  c.data(),
-                                  ldc);
+    const auto fn = detail::overload<T>::fn(
+        cublasSgemm, cublasDgemm, cublasCgemm, cublasZgemm);
+
+    const auto code = fn(cublas_handle().value(),
+                         static_cast<cublasOperation_t>(op_a),
+                         static_cast<cublasOperation_t>(op_b),
+                         m,
+                         n,
+                         k,
+                         &alpha,
+                         a.data(),
+                         lda,
+                         b.data(),
+                         ldb,
+                         &beta,
+                         c.data(),
+                         ldc);
 
     check_error(code);
 }

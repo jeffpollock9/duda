@@ -3,7 +3,7 @@
 
 #include <duda/check_error.hpp>
 #include <duda/curand_generator.hpp>
-#include <duda/detail.hpp>
+#include <duda/detail/overload.hpp>
 #include <duda/device_matrix.hpp>
 #include <duda/device_vector.hpp>
 
@@ -15,13 +15,12 @@ namespace duda
 template <typename T>
 inline void fill_random_uniform(T* const data, const int size)
 {
-    const auto code = detail::overload<T>::call(curandGenerateUniform,
-                                                curandGenerateUniformDouble,
-                                                detail::not_callable{},
-                                                detail::not_callable{},
-                                                curand_gen().value(),
-                                                data,
-                                                size);
+    const auto fn = detail::overload<T>::fn(curandGenerateUniform,
+                                            curandGenerateUniformDouble,
+                                            detail::not_callable{},
+                                            detail::not_callable{});
+
+    const auto code = fn(curand_gen().value(), data, size);
 
     check_error(code);
 }
@@ -32,15 +31,12 @@ inline void fill_random_normal(T* const data,
                                const T mean   = 0.0,
                                const T stddev = 0.0)
 {
-    const auto code = detail::overload<T>::call(curandGenerateNormal,
-                                                curandGenerateNormalDouble,
-                                                detail::not_callable{},
-                                                detail::not_callable{},
-                                                curand_gen().value(),
-                                                data,
-                                                size,
-                                                mean,
-                                                stddev);
+    const auto fn = detail::overload<T>::fn(curandGenerateNormal,
+                                            curandGenerateNormalDouble,
+                                            detail::not_callable{},
+                                            detail::not_callable{});
+
+    const auto code = fn(curand_gen().value(), data, size, mean, stddev);
 
     check_error(code);
 }
@@ -51,15 +47,12 @@ inline void fill_random_log_normal(T* const data,
                                    const T mean   = 0.0,
                                    const T stddev = 0.0)
 {
-    const auto code = detail::overload<T>::call(curandGenerateLogNormal,
-                                                curandGenerateLogNormalDouble,
-                                                detail::not_callable{},
-                                                detail::not_callable{},
-                                                curand_gen().value(),
-                                                data,
-                                                size,
-                                                mean,
-                                                stddev);
+    const auto fn = detail::overload<T>::fn(curandGenerateLogNormal,
+                                            curandGenerateLogNormalDouble,
+                                            detail::not_callable{},
+                                            detail::not_callable{});
+
+    const auto code = fn(curand_gen().value(), data, size, mean, stddev);
 
     check_error(code);
 }

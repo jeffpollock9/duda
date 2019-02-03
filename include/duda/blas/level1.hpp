@@ -2,7 +2,8 @@
 #define DUDA_BLAS_LEVEL1_HPP_
 
 #include <duda/cublas_handle.hpp>
-#include <duda/detail.hpp>
+#include <duda/detail/inc.hpp>
+#include <duda/detail/overload.hpp>
 #include <duda/device_vector.hpp>
 #include <duda/dim.hpp>
 #include <duda/macros.hpp>
@@ -15,15 +16,11 @@ namespace duda
 template <typename T>
 inline void iamax(const device_vector<T>& x, int& result)
 {
-    const auto code = detail::overload<T>::call(cublasIsamax,
-                                                cublasIdamax,
-                                                cublasIcamax,
-                                                cublasIzamax,
-                                                cublas_handle().value(),
-                                                x.size(),
-                                                x.data(),
-                                                detail::incx(),
-                                                &result);
+    const auto fn = detail::overload<T>::fn(
+        cublasIsamax, cublasIdamax, cublasIcamax, cublasIzamax);
+
+    const auto code = fn(
+        cublas_handle().value(), x.size(), x.data(), detail::incx(), &result);
 
     check_error(code);
 
@@ -34,15 +31,11 @@ inline void iamax(const device_vector<T>& x, int& result)
 template <typename T>
 inline void iamin(const device_vector<T>& x, int& result)
 {
-    const auto code = detail::overload<T>::call(cublasIsamin,
-                                                cublasIdamin,
-                                                cublasIcamin,
-                                                cublasIzamin,
-                                                cublas_handle().value(),
-                                                x.size(),
-                                                x.data(),
-                                                detail::incx(),
-                                                &result);
+    const auto fn = detail::overload<T>::fn(
+        cublasIsamin, cublasIdamin, cublasIcamin, cublasIzamin);
+
+    const auto code = fn(
+        cublas_handle().value(), x.size(), x.data(), detail::incx(), &result);
 
     check_error(code);
 
@@ -50,24 +43,20 @@ inline void iamin(const device_vector<T>& x, int& result)
     --result;
 }
 
-template <template <typename> class Device, typename T>
-inline void asum(const Device<T>& x, T& result)
+template <template <typename> class DeviceStorage, typename T>
+inline void asum(const DeviceStorage<T>& x, T& result)
 {
-    const auto code = detail::overload<T>::call(cublasSasum,
-                                                cublasDasum,
-                                                cublasScasum,
-                                                cublasDzasum,
-                                                cublas_handle().value(),
-                                                x.size(),
-                                                x.data(),
-                                                detail::incx(),
-                                                &result);
+    const auto fn = detail::overload<T>::fn(
+        cublasSasum, cublasDasum, cublasScasum, cublasDzasum);
+
+    const auto code = fn(
+        cublas_handle().value(), x.size(), x.data(), detail::incx(), &result);
 
     check_error(code);
 }
 
-template <template <typename> class Device, typename T>
-inline void axpy(const T alpha, const Device<T>& x, Device<T>& y)
+template <template <typename> class DeviceStorage, typename T>
+inline void axpy(const T alpha, const DeviceStorage<T>& x, DeviceStorage<T>& y)
 {
     const dim dim_x(x);
     const dim dim_y(y);
@@ -78,17 +67,16 @@ inline void axpy(const T alpha, const Device<T>& x, Device<T>& y)
                                  " and " + dim_y);
     }
 
-    const auto code = detail::overload<T>::call(cublasSaxpy,
-                                                cublasDaxpy,
-                                                cublasCaxpy,
-                                                cublasZaxpy,
-                                                cublas_handle().value(),
-                                                x.size(),
-                                                &alpha,
-                                                x.data(),
-                                                detail::incx(),
-                                                y.data(),
-                                                detail::incy());
+    const auto fn = detail::overload<T>::fn(
+        cublasSaxpy, cublasDaxpy, cublasCaxpy, cublasZaxpy);
+
+    const auto code = fn(cublas_handle().value(),
+                         x.size(),
+                         &alpha,
+                         x.data(),
+                         detail::incx(),
+                         y.data(),
+                         detail::incy());
 
     check_error(code);
 }
@@ -106,17 +94,16 @@ inline void dot(const device_vector<T>& x, const device_vector<T>& y, T& result)
                                  " and " + to_string(y.size()));
     }
 
-    const auto code = detail::overload<T>::call(cublasSdot,
-                                                cublasDdot,
-                                                detail::not_callable{},
-                                                detail::not_callable{},
-                                                cublas_handle().value(),
-                                                n,
-                                                x.data(),
-                                                detail::incx(),
-                                                y.data(),
-                                                detail::incy(),
-                                                &result);
+    const auto fn = detail::overload<T>::fn(
+        cublasSdot, cublasDdot, detail::not_callable{}, detail::not_callable{});
+
+    const auto code = fn(cublas_handle().value(),
+                         n,
+                         x.data(),
+                         detail::incx(),
+                         y.data(),
+                         detail::incy(),
+                         &result);
 
     check_error(code);
 }
@@ -124,17 +111,11 @@ inline void dot(const device_vector<T>& x, const device_vector<T>& y, T& result)
 template <typename T>
 inline void nrm2(const device_vector<T>& x, T& result)
 {
-    const int n = x.size();
+    const auto fn = detail::overload<T>::fn(
+        cublasSnrm2, cublasDnrm2, cublasScnrm2, cublasDznrm2);
 
-    const auto code = detail::overload<T>::call(cublasSnrm2,
-                                                cublasDnrm2,
-                                                cublasScnrm2,
-                                                cublasDznrm2,
-                                                cublas_handle().value(),
-                                                n,
-                                                x.data(),
-                                                detail::incx(),
-                                                &result);
+    const auto code = fn(
+        cublas_handle().value(), x.size(), x.data(), detail::incx(), &result);
 
     check_error(code);
 }
