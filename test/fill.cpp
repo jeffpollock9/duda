@@ -14,21 +14,16 @@ void test_fill(const int rows, const int cols, const T value)
     }
     {
         device_matrix<T> x(rows, cols);
-        fill(x, value);
+        duda::fill(x, value);
         REQUIRE(copy(x).isApprox(ans));
     }
 }
 
 TEST_CASE("fill matrix", "[device_matrix][fill]")
 {
-    const int n = 666;
-
-    for (int x = 3; x < n; x += 42)
-    {
-        test_fill<int>(x, x + 1, x + 4);
-        test_fill<float>(x, x + 1, x + 3.14f);
-        test_fill<double>(x, x - 2, x - 42.0);
-    }
+    test_fill<int>(7, 8, 3);
+    test_fill<float>(19, 1, 3.14f);
+    test_fill<double>(21, 2, -42.0);
 }
 
 template <typename T>
@@ -43,19 +38,14 @@ void test_fill(const int size, const T value)
     }
     {
         device_vector<T> x(size);
-        fill(x, value);
+        duda::fill(x, value);
         REQUIRE(copy(x).isApprox(ans));
     }
 }
 
 TEST_CASE("fill vector", "[device_vector][fill]")
 {
-    const int n = 8888;
-
-    for (int x = 89; x < n; x += 42)
-    {
-        test_fill<int>(x + 17, x + 4);
-        test_fill<float>(x + 1, x + 3.14f);
-        test_fill<double>(x - 2, x - 42.0);
-    }
+    test_fill<int>(17, 4);
+    test_fill<float>(11, 3.14f);
+    test_fill<double>(2, -42.0);
 }

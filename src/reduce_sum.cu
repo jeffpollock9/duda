@@ -1,8 +1,7 @@
 #include <duda/reduce_sum.hpp>
-#include <duda/check_error.hpp>
 
-#include <cub/cub.cuh>
-#include <cuda_runtime_api.h>
+#include <thrust/device_ptr.h>
+#include <thrust/reduce.h>
 
 namespace duda
 {
@@ -13,30 +12,8 @@ namespace detail
 template <typename T>
 inline T reduce_sum(const T* const data, const int size)
 {
-    using dr = cub::DeviceReduce;
-
-    T* out_d          = nullptr;
-    void* tmp_storage = nullptr;
-
-    check_error(cudaMalloc((void**)&out_d, sizeof(T)));
-
-    std::size_t tmp_storage_bytes = 0;
-
-    check_error(dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
-
-    check_error(cudaMalloc(&tmp_storage, tmp_storage_bytes));
-
-    check_error(dr::Sum(tmp_storage, tmp_storage_bytes, data, out_d, size));
-
-    check_error(cudaFree(tmp_storage));
-
-    T out;
-
-    check_error(cudaMemcpy(&out, out_d, sizeof(T), cudaMemcpyDeviceToHost));
-
-    check_error(cudaFree(out_d));
-
-    return out;
+    const auto ptr = thrust::device_pointer_cast(data);
+    return thrust::reduce(ptr, ptr + size);
 }
 
 } // namespace detail
