@@ -4,6 +4,7 @@
 - tidy up directories into modules, e.g. random, blas, kernels
 - add all cuBLAS routines
 - add all cuSOLVER routines
+- add statistical distributions
 - add sparse matrix/vector
 - add python bindings using pybind11
 - add R bindings using Rcpp
@@ -18,7 +19,8 @@
 - add CI on github with coverage etc
 - consider moving to google test
 - fix project layout, see
-  e.g. https://www.reddit.com/r/cpp/comments/996q8o/prepare_thy_pitchforks_a_de_facto_standard/
+  e.g. https://www.reddit.com/r/cpp/comments/996q8o/prepare_thy_pitchforks_a_de_facto_standard
 - use thrust instead of cub? (think thrust now uses cub anyway)
 - put helpers stuff into helpers namespace
 - test complex number stuff
+- use submodules for deps
