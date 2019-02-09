@@ -1,9 +1,14 @@
 set(DUDA_KERNELS
     kernels/fill.cu
-    kernels/eye.cu)
+    kernels/eye.cu
+    )
 
 set(DUDA_REDUCTIONS
-    reductions/reduce_sum.cu)
+    reductions/reduce_sum.cu
+    reductions/reduce_min.cu
+    reductions/reduce_max.cu
+    reductions/reduce_minmax.cu
+    )
 
 add_library(duda_kernels SHARED ${DUDA_KERNELS} ${DUDA_REDUCTIONS})
 

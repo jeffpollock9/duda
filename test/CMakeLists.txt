@@ -14,7 +14,11 @@ set(DUDA_TESTS
     blas/level3
     kernels/eye
     kernels/fill
-    reductions/reduce_sum)
+    reductions/reduce_sum
+    reductions/reduce_min
+    reductions/reduce_max
+    reductions/reduce_minmax
+    )
 
 foreach(test ${DUDA_TESTS})
     string(REGEX REPLACE "/" "_" name ${test})

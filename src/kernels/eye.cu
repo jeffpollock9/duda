@@ -1,4 +1,3 @@
-#include <duda/kernels/eye.hpp>
 
 namespace duda
 {

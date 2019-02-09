@@ -5,17 +5,10 @@
 template <typename T>
 void test_eye(const int dim)
 {
-    const auto ans = testing::host_matrix<T>::Identity(dim, dim);
+    const auto host   = testing::host_matrix<T>::Identity(dim, dim);
+    const auto device = duda::eye<T>(dim);
 
-    {
-        duda::device_matrix<T> x(dim, dim);
-        duda::eye(x.data(), dim);
-        REQUIRE(testing::all_close(x, ans));
-    }
-    {
-        const auto x = duda::eye<T>(dim);
-        REQUIRE(testing::all_close(x, ans));
-    }
+    REQUIRE(testing::all_close(device, host));
 }
 
 TEST_CASE("eye", "[device_matrix][eye]")
