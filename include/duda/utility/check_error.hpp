@@ -1,7 +1,7 @@
-#ifndef DUDA_CHECK_ERROR_HPP_
-#define DUDA_CHECK_ERROR_HPP_
+#ifndef DUDA_UTILITY_CHECK_ERROR_HPP_
+#define DUDA_UTILITY_CHECK_ERROR_HPP_
 
-#include <duda/macros.hpp>
+#include <duda/utility/macros.hpp>
 
 #include <cublas_v2.h>
 #include <cuda_runtime_api.h>
@@ -39,4 +39,4 @@ inline void check_error(const curandStatus_t code)
 
 } // namespace duda
 
-#endif /* DUDA_CHECK_ERROR_HPP_ */
+#endif /* DUDA_UTILITY_CHECK_ERROR_HPP_ */

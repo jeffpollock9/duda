@@ -1,19 +1,19 @@
-#include <helpers/helpers.hpp>
-
-#include <duda/blas.hpp>
+#include <duda/blas/level1.hpp>
 #include <duda/random.hpp>
+
+#include <testing.hpp>
 
 template <typename T>
 void test_amax(const int n)
 {
-    auto x_d = duda::random_normal<T>(n);
-    auto x_h = copy(x_d);
+    const auto x_d = duda::random_normal<T>(n);
+    const auto x_h = testing::copy(x_d);
 
     int result;
 
     duda::iamax(x_d, result);
 
-    typename host_vector<T>::Index index;
+    typename testing::host_vector<T>::Index index;
 
     x_h.cwiseAbs().maxCoeff(&index);
 
@@ -29,14 +29,14 @@ TEST_CASE("amax", "[device_vector][blas]")
 template <typename T>
 void test_amin(const int n)
 {
-    auto x_d = duda::random_normal<T>(n);
-    auto x_h = copy(x_d);
+    const auto x_d = duda::random_normal<T>(n);
+    const auto x_h = testing::copy(x_d);
 
     int result;
 
     duda::iamin(x_d, result);
 
-    typename host_vector<T>::Index index;
+    typename testing::host_vector<T>::Index index;
 
     x_h.cwiseAbs().minCoeff(&index);
 
@@ -52,8 +52,8 @@ TEST_CASE("amin", "[device_vector][blas]")
 template <typename T, typename... Dim>
 void test_asum(const Dim... dim)
 {
-    auto x_d = duda::random_normal<T>(dim...);
-    auto x_h = copy(x_d);
+    const auto x_d = duda::random_normal<T>(dim...);
+    const auto x_h = testing::copy(x_d);
 
     T result;
 
@@ -74,16 +74,16 @@ TEST_CASE("asum", "[device_vector][device_matrix][blas]")
 template <typename T, typename... Dim>
 void test_axpy(const T alpha, const Dim... dim)
 {
-    auto x_d = duda::random_normal<T>(dim...);
-    auto y_d = duda::random_normal<T>(dim...);
+    const auto x_d = duda::random_normal<T>(dim...);
+    auto y_d       = duda::random_normal<T>(dim...);
 
-    auto x_h = copy(x_d);
-    auto y_h = copy(y_d);
+    const auto x_h = testing::copy(x_d);
+    auto y_h       = testing::copy(y_d);
 
     duda::axpy(alpha, x_d, y_d);
     y_h = alpha * x_h + y_h;
 
-    REQUIRE(y_h.isApprox(copy(y_d)));
+    REQUIRE(testing::all_close(y_d, y_h));
 }
 
 TEST_CASE("axpy", "[device_vector][device_matrix][blas]")
@@ -98,11 +98,11 @@ TEST_CASE("axpy", "[device_vector][device_matrix][blas]")
 template <typename T>
 void test_dot(const int n)
 {
-    auto x_d = duda::random_normal<T>(n);
-    auto y_d = duda::random_normal<T>(n);
+    const auto x_d = duda::random_normal<T>(n);
+    const auto y_d = duda::random_normal<T>(n);
 
-    auto x_h = copy(x_d);
-    auto y_h = copy(y_d);
+    const auto x_h = testing::copy(x_d);
+    const auto y_h = testing::copy(y_d);
 
     T result;
 
@@ -120,8 +120,8 @@ TEST_CASE("dot", "[device_vector][blas]")
 template <typename T>
 void test_nrm2(const int n)
 {
-    auto x_d = duda::random_normal<T>(n);
-    auto x_h = copy(x_d);
+    const auto x_d = duda::random_normal<T>(n);
+    const auto x_h = testing::copy(x_d);
 
     T result;
 
@@ -142,16 +142,16 @@ void test_rot(const int n, const T c, const T s)
     auto x_d = duda::random_uniform<T>(n);
     auto y_d = duda::random_uniform<T>(n);
 
-    auto x_h = copy(x_d);
-    auto y_h = copy(y_d);
+    const auto x_h = testing::copy(x_d);
+    const auto y_h = testing::copy(y_d);
 
     duda::rot(x_d, y_d, c, s);
 
-    auto x_ans_h = c * x_h + s * y_h;
-    auto y_ans_h = -s * x_h + c * y_h;
+    const auto x_ans_h = c * x_h + s * y_h;
+    const auto y_ans_h = -s * x_h + c * y_h;
 
-    REQUIRE(x_ans_h.isApprox(copy(x_d)));
-    REQUIRE(y_ans_h.isApprox(copy(y_d)));
+    REQUIRE(testing::all_close(x_d, x_ans_h));
+    REQUIRE(testing::all_close(y_d, y_ans_h));
 }
 
 TEST_CASE("rot", "[device_vector][blas]")
@@ -164,12 +164,12 @@ template <typename T, typename... Dim>
 void test_scal(const T alpha, const Dim... dim)
 {
     auto x_d = duda::random_uniform<T>(dim...);
-    auto x_h = copy(x_d);
+    auto x_h       = testing::copy(x_d);
 
     duda::scal(alpha, x_d);
     x_h = alpha * x_h;
 
-    REQUIRE(x_h.isApprox(copy(x_d)));
+    REQUIRE(testing::all_close(x_d, x_h));
 }
 
 TEST_CASE("scal", "[device_vector][device_matrix][blas]")

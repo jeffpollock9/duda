@@ -1,7 +1,8 @@
-#include <helpers/helpers.hpp>
-
 #include <duda/blas.hpp>
 #include <duda/random.hpp>
+
+#include <Eigen/Dense>
+#include <benchmark/benchmark.h>
 
 template <typename T>
 constexpr T alpha = 0.001;
@@ -10,32 +11,23 @@ template <typename T>
 constexpr T beta = 0.02;
 
 template <typename T>
+using host_vector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
+
+template <typename T>
+using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
+
+template <typename T>
 static void BM_host_gemv(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    const host_matrix<T> A = host_matrix<T>::Random(n, n);
-    const host_vector<T> x = host_vector<T>::Random(n);
-    host_vector<T> y       = host_vector<T>::Random(n);
+    const auto a     = host_matrix<T>::Random(n, n);
+    const auto x     = host_vector<T>::Random(n);
+    host_vector<T> y = host_vector<T>::Random(n);
 
     for (auto _ : state)
     {
-        y = alpha<T> * A * x + beta<T> * y;
-    }
-}
-
-template <typename T>
-static void BM_host_gemm(benchmark::State& state)
-{
-    const int n = state.range(0);
-
-    const host_matrix<T> A = host_matrix<T>::Random(n, n);
-    const host_matrix<T> x = host_vector<T>::Random(n, 1);
-    host_matrix<T> y       = host_vector<T>::Random(n, 1);
-
-    for (auto _ : state)
-    {
-        y = alpha<T> * A * x + beta<T> * y;
+        y = alpha<T> * a * x + beta<T> * y;
     }
 }
 
@@ -44,41 +36,24 @@ static void BM_device_gemv(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    const auto A = duda::random_uniform<T>(n, n);
+    const auto a = duda::random_uniform<T>(n, n);
     const auto x = duda::random_uniform<T>(n);
     auto y       = duda::random_uniform<T>(n);
 
     for (auto _ : state)
     {
-        gemv(duda::op::none, alpha<T>, A, x, beta<T>, y);
+        duda::gemv(duda::op::none, alpha<T>, a, x, beta<T>, y);
     }
 }
 
-template <typename T>
-static void BM_device_gemm(benchmark::State& state)
-{
-    const int n = state.range(0);
-
-    const auto A = duda::random_uniform<T>(n, n);
-    const auto x = duda::random_uniform<T>(n, 1);
-    auto y       = duda::random_uniform<T>(n, 1);
-
-    for (auto _ : state)
-    {
-        gemm(duda::op::none, duda::op::none, alpha<T>, A, x, beta<T>, y);
-    }
-}
+#define DUDA_BENCHMARK_RANGE Range(8, 8 << 8)
 
 BENCHMARK_TEMPLATE(BM_host_gemv, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_host_gemv, double)->DUDA_BENCHMARK_RANGE;
 
-BENCHMARK_TEMPLATE(BM_host_gemm, float)->DUDA_BENCHMARK_RANGE;
-BENCHMARK_TEMPLATE(BM_host_gemm, double)->DUDA_BENCHMARK_RANGE;
-
 BENCHMARK_TEMPLATE(BM_device_gemv, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_gemv, double)->DUDA_BENCHMARK_RANGE;
 
-BENCHMARK_TEMPLATE(BM_device_gemm, float)->DUDA_BENCHMARK_RANGE;
-BENCHMARK_TEMPLATE(BM_device_gemm, double)->DUDA_BENCHMARK_RANGE;
+#undef DUDA_BENCHMARK_RANGE
 
 BENCHMARK_MAIN();

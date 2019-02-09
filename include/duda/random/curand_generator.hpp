@@ -1,7 +1,7 @@
-#ifndef DUDA_CURAND_GENERATOR_HPP_
-#define DUDA_CURAND_GENERATOR_HPP_
+#ifndef DUDA_RANDOM_CURAND_GENERATOR_HPP_
+#define DUDA_RANDOM_CURAND_GENERATOR_HPP_
 
-#include <duda/check_error.hpp>
+#include <duda/utility/check_error.hpp>
 
 #include <curand.h>
 
@@ -36,7 +36,7 @@ private:
     curandGenerator_t gen_;
 };
 
-inline curand_generator_wrapper& curand_gen()
+inline curand_generator_wrapper& curand_generator()
 {
     static curand_generator_wrapper gen;
     return gen;
@@ -44,4 +44,4 @@ inline curand_generator_wrapper& curand_gen()
 
 } // namespace duda
 
-#endif /* DUDA_CURAND_GENERATOR_HPP_ */
+#endif /* DUDA_RANDOM_CURAND_GENERATOR_HPP_ */

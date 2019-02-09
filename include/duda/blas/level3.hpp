@@ -1,13 +1,13 @@
 #ifndef DUDA_BLAS_LEVEL3_HPP_
 #define DUDA_BLAS_LEVEL3_HPP_
 
-#include <duda/cublas_handle.hpp>
+#include <duda/blas/cublas_handle.hpp>
 #include <duda/detail/inc.hpp>
 #include <duda/detail/overload.hpp>
 #include <duda/device_matrix.hpp>
-#include <duda/dim.hpp>
-#include <duda/macros.hpp>
-#include <duda/op.hpp>
+#include <duda/utility/dim.hpp>
+#include <duda/utility/macros.hpp>
+#include <duda/utility/enums.hpp>
 
 #include <cublas_v2.h>
 

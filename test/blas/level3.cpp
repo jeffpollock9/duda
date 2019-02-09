@@ -1,25 +1,25 @@
-#include <helpers/helpers.hpp>
-
-#include <duda/blas.hpp>
+#include <duda/blas/level3.hpp>
 #include <duda/random.hpp>
+
+#include <testing.hpp>
 
 template <typename T>
 void test_gemm(
     const T alpha, const T beta, const int m, const int n, const int k)
 {
-    auto A_d = duda::random_normal<T>(n, m);
-    auto B_d = duda::random_normal<T>(m, k);
-    auto C_d = duda::random_normal<T>(n, k);
+    const auto a_d = duda::random_normal<T>(n, m);
+    const auto b_d = duda::random_normal<T>(m, k);
+    auto c_d       = duda::random_normal<T>(n, k);
 
-    auto A_h = copy(A_d);
-    auto B_h = copy(B_d);
-    auto C_h = copy(C_d);
+    const auto a_h = testing::copy(a_d);
+    const auto b_h = testing::copy(b_d);
+    auto c_h       = testing::copy(c_d);
 
-    gemm(duda::op::none, duda::op::none, alpha, A_d, B_d, beta, C_d);
+    gemm(duda::op::none, duda::op::none, alpha, a_d, b_d, beta, c_d);
 
-    C_h = alpha * A_h * B_h + beta * C_h;
+    c_h = alpha * a_h * b_h + beta * c_h;
 
-    REQUIRE(C_h.isApprox(copy(C_d)));
+    REQUIRE(testing::all_close(c_d, c_h));
 }
 
 TEST_CASE("gemm", "[device_matrix][blas]")
@@ -32,19 +32,19 @@ template <typename T>
 void test_gemm_transpose(
     const T alpha, const T beta, const int m, const int n, const int k)
 {
-    auto A_d = duda::random_normal<T>(n, m);
-    auto B_d = duda::random_normal<T>(k, n);
-    auto C_d = duda::random_normal<T>(m, k);
+    const auto a_d = duda::random_normal<T>(n, m);
+    const auto b_d = duda::random_normal<T>(k, n);
+    auto c_d       = duda::random_normal<T>(m, k);
 
-    auto A_h = copy(A_d);
-    auto B_h = copy(B_d);
-    auto C_h = copy(C_d);
+    const auto a_h = testing::copy(a_d);
+    const auto b_h = testing::copy(b_d);
+    auto c_h       = testing::copy(c_d);
 
-    gemm(duda::op::transpose, duda::op::transpose, alpha, A_d, B_d, beta, C_d);
+    duda::gemm(duda::op::transpose, duda::op::transpose, alpha, a_d, b_d, beta, c_d);
 
-    C_h = alpha * A_h.transpose() * B_h.transpose() + beta * C_h;
+    c_h = alpha * a_h.transpose() * b_h.transpose() + beta * c_h;
 
-    REQUIRE(C_h.isApprox(copy(C_d)));
+    REQUIRE(testing::all_close(c_d, c_h));
 }
 
 TEST_CASE("gemm transpose ops", "[device_matrix][blas]")

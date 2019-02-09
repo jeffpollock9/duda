@@ -1,7 +1,7 @@
 #ifndef DEVICE_VECTOR_HPP_
 #define DEVICE_VECTOR_HPP_
 
-#include <duda/check_error.hpp>
+#include <duda/utility/check_error.hpp>
 
 #include <cuda_runtime_api.h>
 

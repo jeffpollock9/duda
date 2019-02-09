@@ -1,12 +1,12 @@
 #ifndef DUDA_BLAS_LEVEL1_HPP_
 #define DUDA_BLAS_LEVEL1_HPP_
 
-#include <duda/cublas_handle.hpp>
+#include <duda/blas/cublas_handle.hpp>
 #include <duda/detail/inc.hpp>
 #include <duda/detail/overload.hpp>
 #include <duda/device_vector.hpp>
-#include <duda/dim.hpp>
-#include <duda/macros.hpp>
+#include <duda/utility/dim.hpp>
+#include <duda/utility/macros.hpp>
 
 #include <cublas_v2.h>
 

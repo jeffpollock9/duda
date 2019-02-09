@@ -1,14 +1,14 @@
 #ifndef DUDA_BLAS_LEVEL2_HPP_
 #define DUDA_BLAS_LEVEL2_HPP_
 
-#include <duda/cublas_handle.hpp>
+#include <duda/blas/cublas_handle.hpp>
 #include <duda/detail/overload.hpp>
 #include <duda/detail/inc.hpp>
 #include <duda/device_matrix.hpp>
 #include <duda/device_vector.hpp>
-#include <duda/dim.hpp>
-#include <duda/macros.hpp>
-#include <duda/op.hpp>
+#include <duda/utility/dim.hpp>
+#include <duda/utility/enums.hpp>
+#include <duda/utility/macros.hpp>
 
 #include <cublas_v2.h>
 
@@ -63,6 +63,38 @@ inline void gemv(const op op_a,
                          &beta,
                          y.data(),
                          detail::incy());
+
+    check_error(code);
+}
+
+template <typename T>
+inline void syr(const fill_mode uplo,
+                const T alpha,
+                const device_vector<T>& x,
+                device_matrix<T>& a)
+{
+    const int n = x.size();
+
+    if (DUDA_UNLIKELY(n != a.rows() || n != a.cols()))
+    {
+        throw std::runtime_error("can't syr with input size " +
+                                 std::to_string(n) +
+                                 " and output dimension + " + dim(a));
+    }
+
+    const int lda = a.rows();
+
+    const auto fn =
+        detail::overload<T>::fn(cublasSsyr, cublasDsyr, cublasCsyr, cublasZsyr);
+
+    const auto code = fn(cublas_handle().value(),
+                         static_cast<cublasFillMode_t>(uplo),
+                         n,
+                         &alpha,
+                         x.data(),
+                         detail::incx(),
+                         a.data(),
+                         lda);
 
     check_error(code);
 }

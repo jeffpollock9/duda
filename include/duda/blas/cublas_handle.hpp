@@ -1,7 +1,7 @@
-#ifndef DUDA_CUBLAS_HANDLE_HPP_
-#define DUDA_CUBLAS_HANDLE_HPP_
+#ifndef DUDA_BLAS_CUBLAS_HANDLE_HPP_
+#define DUDA_BLAS_CUBLAS_HANDLE_HPP_
 
-#include <duda/check_error.hpp>
+#include <duda/utility/check_error.hpp>
 
 #include <cublas_v2.h>
 
@@ -37,4 +37,4 @@ cublas_handle_wrapper& cublas_handle()
 
 } // namespace duda
 
-#endif /* DUDA_CUBLAS_HANDLE_HPP_ */
+#endif /* DUDA_BLAS_CUBLAS_HANDLE_HPP_ */

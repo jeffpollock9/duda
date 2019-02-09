@@ -1,9 +1,9 @@
-#ifndef DUDA_DIM_HPP_
-#define DUDA_DIM_HPP_
+#ifndef DUDA_UTILITY_DIM_HPP_
+#define DUDA_UTILITY_DIM_HPP_
 
 #include <duda/device_matrix.hpp>
 #include <duda/device_vector.hpp>
-#include <duda/op.hpp>
+#include <duda/utility/enums.hpp>
 
 #include <string>
 #include <utility>
@@ -59,4 +59,4 @@ inline std::string operator+(const std::string& x, const dim& y)
 
 } // namespace duda
 
-#endif /* DUDA_DIM_HPP_ */
+#endif /* DUDA_UTILITY_DIM_HPP_ */

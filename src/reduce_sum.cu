@@ -1,4 +1,4 @@
-#include <duda/reduce_sum.hpp>
+#include <duda/reductions/reduce_sum.hpp>
 
 #include <thrust/device_ptr.h>
 #include <thrust/reduce.h>

@@ -1,26 +1,27 @@
-#include <helpers/helpers.hpp>
-
 #include <duda/random.hpp>
+#include <duda/device_vector.hpp>
+
+#include <testing.hpp>
 
 TEST_CASE("default ctor", "[device_vector]")
 {
-    device_vector<float> x;
-    device_vector<double> y;
+    duda::device_vector<float> x;
+    duda::device_vector<double> y;
 }
 
 template <typename T>
 void test_copy_ctor(const int size)
 {
-    device_vector<T> x_d = duda::random_normal<T>(size);
-    device_vector<T> y_d(x_d);
-    device_vector<T> z_d = x_d;
+    duda::device_vector<T> x_d = duda::random_normal<T>(size);
+    duda::device_vector<T> y_d(x_d);
+    duda::device_vector<T> z_d = x_d;
 
     REQUIRE(x_d.data() != y_d.data());
     REQUIRE(x_d.data() != z_d.data());
 
-    host_vector<T> x_h = copy(x_d);
-    host_vector<T> y_h = copy(y_d);
-    host_vector<T> z_h = copy(z_d);
+    testing::host_vector<T> x_h = testing::copy(x_d);
+    testing::host_vector<T> y_h = testing::copy(y_d);
+    testing::host_vector<T> z_h = testing::copy(z_d);
 
     REQUIRE(x_h.isApprox(y_h));
     REQUIRE(x_h.isApprox(z_h));
@@ -35,11 +36,11 @@ TEST_CASE("copy ctor", "[device_vector]")
 template <typename T>
 void test_move_ctor(const int size)
 {
-    device_vector<T> x_d = duda::random_normal<T>(size);
-    host_vector<T> x_h   = copy(x_d);
+    duda::device_vector<T> x_d  = duda::random_normal<T>(size);
+    testing::host_vector<T> x_h = testing::copy(x_d);
 
-    device_vector<T> y_d = std::move(x_d);
-    host_vector<T> y_h   = copy(y_d);
+    duda::device_vector<T> y_d  = std::move(x_d);
+    testing::host_vector<T> y_h = testing::copy(y_d);
 
     REQUIRE(x_d.data() == nullptr);
 
@@ -56,9 +57,9 @@ TEST_CASE("move ctor", "[device_vector]")
 template <typename T>
 void test_transfer(const int size)
 {
-    host_vector<T> h1  = host_vector<T>::Random(size);
-    device_vector<T> d = copy(h1);
-    host_vector<T> h2  = copy(d);
+    testing::host_vector<T> h1 = testing::host_vector<T>::Random(size);
+    duda::device_vector<T> d   = testing::copy(h1);
+    testing::host_vector<T> h2 = testing::copy(d);
 
     REQUIRE(h1.isApprox(h2));
 }

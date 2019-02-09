@@ -1,5 +1,5 @@
-#ifndef DUDA_COMPLEX_HPP_
-#define DUDA_COMPLEX_HPP_
+#ifndef DUDA_UTILITY_TYPES_HPP_
+#define DUDA_UTILITY_TYPES_HPP_
 
 #include <cublas_v2.h>
 
@@ -12,4 +12,4 @@ using double_complex = cuDoubleComplex;
 
 } // namespace duda
 
-#endif /* DUDA_COMPLEX_HPP_ */
+#endif /* DUDA_UTILITY_TYPES_HPP_ */

@@ -1,21 +1,21 @@
-#include <helpers/helpers.hpp>
+#include <duda/kernels/fill.hpp>
 
-#include <duda/fill.hpp>
+#include <testing.hpp>
 
 template <typename T>
 void test_fill(const int rows, const int cols, const T value)
 {
-    host_matrix<T> ans = host_matrix<T>::Constant(rows, cols, value);
+    const auto ans = testing::host_matrix<T>::Constant(rows, cols, value);
 
     {
-        device_matrix<T> x(rows, cols);
+        duda::device_matrix<T> x(rows, cols);
         duda::fill(x.data(), x.size(), value);
-        REQUIRE(copy(x).isApprox(ans));
+        REQUIRE(testing::all_close(x, ans));
     }
     {
-        device_matrix<T> x(rows, cols);
+        duda::device_matrix<T> x(rows, cols);
         duda::fill(x, value);
-        REQUIRE(copy(x).isApprox(ans));
+        REQUIRE(testing::all_close(x, ans));
     }
 }
 
@@ -29,17 +29,17 @@ TEST_CASE("fill matrix", "[device_matrix][fill]")
 template <typename T>
 void test_fill(const int size, const T value)
 {
-    host_vector<T> ans = host_vector<T>::Constant(size, value);
+    const auto ans = testing::host_vector<T>::Constant(size, value);
 
     {
-        device_vector<T> x(size);
+        duda::device_vector<T> x(size);
         duda::fill(x.data(), x.size(), value);
-        REQUIRE(copy(x).isApprox(ans));
+        REQUIRE(testing::all_close(x, ans));
     }
     {
-        device_vector<T> x(size);
+        duda::device_vector<T> x(size);
         duda::fill(x, value);
-        REQUIRE(copy(x).isApprox(ans));
+        REQUIRE(testing::all_close(x, ans));
     }
 }
 

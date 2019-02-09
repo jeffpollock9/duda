@@ -1,7 +1,7 @@
 #ifndef DUDA_DETAIL_OVERLOAD_HPP_
 #define DUDA_DETAIL_OVERLOAD_HPP_
 
-#include <duda/complex.hpp>
+#include <duda/utility/types.hpp>
 
 #include <utility>
 

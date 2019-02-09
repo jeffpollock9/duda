@@ -1,5 +1,5 @@
-#ifndef DUDA_REDUCE_SUM_HPP_
-#define DUDA_REDUCE_SUM_HPP_
+#ifndef DUDA_REDUCTIONS_REDUCE_SUM_HPP_
+#define DUDA_REDUCTIONS_REDUCE_SUM_HPP_
 
 namespace duda
 {
@@ -18,4 +18,4 @@ inline T reduce_sum(const DeviceStorage<T>& x)
 
 } // namespace duda
 
-#endif /* DUDA_REDUCE_SUM_HPP_ */
+#endif /* DUDA_REDUCTIONS_REDUCE_SUM_HPP_ */
