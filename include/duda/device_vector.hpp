@@ -2,9 +2,13 @@
 #define DEVICE_VECTOR_HPP_
 
 #include <duda/utility/check_error.hpp>
+#include <duda/utility/copy.hpp>
+#include <duda/utility/print_precision.hpp>
 
 #include <cuda_runtime_api.h>
 
+#include <iomanip>
+#include <iosfwd>
 #include <utility>
 
 namespace duda
@@ -22,13 +26,12 @@ struct device_vector
 
     device_vector(const T* const host, const int size) : device_vector(size)
     {
-        check_error(cudaMemcpy(data_, host, bytes(), cudaMemcpyHostToDevice));
+        copy_host_to_device(host, *this);
     }
 
     device_vector(const device_vector& x) : device_vector(x.size())
     {
-        check_error(
-            cudaMemcpy(data_, x.data_, bytes(), cudaMemcpyDeviceToDevice));
+        copy_device_to_device(x, *this);
     }
 
     device_vector(device_vector&& x) : size_(x.size())
@@ -59,6 +62,26 @@ struct device_vector
         check_error(cudaFree(data_));
     }
 
+    const T operator()(const int index) const
+    {
+        T value;
+
+        const auto code = cudaMemcpy(
+            &value, data_ + index, sizeof(T), cudaMemcpyDeviceToHost);
+
+        check_error(code);
+
+        return value;
+    }
+
+    void set(const int index, const T value)
+    {
+        const auto code = cudaMemcpy(
+            data_ + index, &value, sizeof(T), cudaMemcpyHostToDevice);
+
+        check_error(code);
+    }
+
     int size() const
     {
         return size_;
@@ -83,6 +106,27 @@ private:
     T* data_  = nullptr;
     int size_ = 0;
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const device_vector<T>& x)
+{
+    std::ios flags(nullptr);
+    flags.copyfmt(os);
+
+    os << std::setprecision(print_precision().value()) << std::scientific;
+    os << "[ ";
+
+    for (int i = 0; i < x.size(); ++i)
+    {
+        os << x(i) << " ";
+    }
+
+    os << "]\n";
+
+    os.copyfmt(flags);
+
+    return os;
+}
 
 } // namespace duda
 

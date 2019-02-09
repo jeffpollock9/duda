@@ -1,4 +1,6 @@
-find_package(fmt)
-find_package(Eigen3)
+set(DUDA_EXAMPLES print)
 
-# TODO: write me
+foreach(example ${DUDA_EXAMPLES})
+    add_executable(example_${example} ${example}.cpp)
+    target_link_libraries(example_${example} duda)
+endforeach()

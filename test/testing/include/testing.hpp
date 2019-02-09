@@ -3,7 +3,7 @@
 
 #include <duda/device_matrix.hpp>
 #include <duda/device_vector.hpp>
-#include <duda/utility/copy_device_to_host.hpp>
+#include <duda/utility/copy.hpp>
 
 #include <Eigen/Dense>
 #include <catch.hpp>
