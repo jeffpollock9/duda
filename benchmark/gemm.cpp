@@ -39,7 +39,7 @@ static void BM_device_gemm(benchmark::State& state)
 
     for (auto _ : state)
     {
-        gemm(duda::op::none, duda::op::none, alpha<T>, a, b, beta<T>, c);
+        duda::gemm(duda::op::none, duda::op::none, alpha<T>, a, b, beta<T>, c);
     }
 }
 
