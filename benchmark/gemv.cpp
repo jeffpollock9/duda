@@ -1,5 +1,6 @@
 #include <duda/blas/level2.hpp>
-#include <duda/random.hpp>
+#include <duda/device_matrix.hpp>
+#include <duda/device_vector.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
@@ -19,6 +20,8 @@ using host_matrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
 template <typename T>
 static void BM_host_gemv(benchmark::State& state)
 {
+    std::srand(42);
+
     const int n = state.range(0);
 
     const host_matrix<T> a = host_matrix<T>::Random(n, n);
@@ -34,11 +37,17 @@ static void BM_host_gemv(benchmark::State& state)
 template <typename T>
 static void BM_device_gemv(benchmark::State& state)
 {
+    std::srand(42);
+
     const int n = state.range(0);
 
-    const auto a = duda::random_uniform<T>(n, n);
-    const auto x = duda::random_uniform<T>(n);
-    auto y       = duda::random_uniform<T>(n);
+    const host_matrix<T> a_h = host_matrix<T>::Random(n, n);
+    const host_vector<T> x_h = host_vector<T>::Random(n);
+    const host_vector<T> y_h = host_vector<T>::Random(n);
+
+    const duda::device_matrix<T> a(a_h.data(), n, n);
+    const duda::device_vector<T> x(x_h.data(), n);
+    duda::device_vector<T> y(y_h.data(), n);
 
     for (auto _ : state)
     {
@@ -46,7 +55,7 @@ static void BM_device_gemv(benchmark::State& state)
     }
 }
 
-#define DUDA_BENCHMARK_RANGE Range(8, 8 << 8)
+#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(10, 1'000)
 
 BENCHMARK_TEMPLATE(BM_host_gemv, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_host_gemv, double)->DUDA_BENCHMARK_RANGE;

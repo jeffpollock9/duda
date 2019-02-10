@@ -1,5 +1,5 @@
+#include <duda/device_vector.hpp>
 #include <duda/math.hpp>
-#include <duda/random.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
@@ -7,15 +7,17 @@
 template <typename T>
 using host_vector = Eigen::Array<T, Eigen::Dynamic, 1>;
 
-#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(10, 1'000'000)
+#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(100, 10'000'000)
 
 #define DUDA_BENCHMARK_MATH(function)                                          \
     template <typename T>                                                      \
     static void BM_host_##function(benchmark::State& state)                    \
     {                                                                          \
+        std::srand(666);                                                       \
+                                                                               \
         const int n = state.range(0);                                          \
                                                                                \
-        const host_vector<T> x = host_vector<T>::Random(n);                    \
+        const host_vector<T> x = host_vector<T>::Random(n) + 1.0;              \
                                                                                \
         for (auto _ : state)                                                   \
         {                                                                      \
@@ -28,9 +30,12 @@ using host_vector = Eigen::Array<T, Eigen::Dynamic, 1>;
     template <typename T>                                                      \
     static void BM_device_##function(benchmark::State& state)                  \
     {                                                                          \
+        std::srand(666);                                                       \
+                                                                               \
         const int n = state.range(0);                                          \
                                                                                \
-        const auto x = duda::random_uniform<T>(n);                             \
+        const host_vector<T> x_h = host_vector<T>::Random(n) + 1.0;            \
+        const duda::device_vector<T> x(x_h.data(), n);                         \
                                                                                \
         for (auto _ : state)                                                   \
         {                                                                      \

@@ -1,5 +1,5 @@
 #include <duda/blas/level1.hpp>
-#include <duda/random.hpp>
+#include <duda/device_vector.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
@@ -13,6 +13,8 @@ using host_vector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
 template <typename T>
 static void BM_host_axpy(benchmark::State& state)
 {
+    std::srand(123);
+
     const int n = state.range(0);
 
     const host_vector<T> x = host_vector<T>::Random(n);
@@ -27,18 +29,23 @@ static void BM_host_axpy(benchmark::State& state)
 template <typename T>
 static void BM_device_axpy(benchmark::State& state)
 {
+    std::srand(123);
+
     const int n = state.range(0);
 
-    const auto x = duda::random_uniform<T>(n);
-    auto y       = duda::random_uniform<T>(n);
+    const host_vector<T> x_h = host_vector<T>::Random(n);
+    const host_vector<T> y_h = host_vector<T>::Random(n);
+
+    const duda::device_vector<T> x(x_h.data(), n);
+    duda::device_vector<T> y(y_h.data(), n);
 
     for (auto _ : state)
     {
-        axpy(a<T>, x, y);
+        duda::axpy(a<T>, x, y);
     }
 }
 
-#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(10, 1'000'000)
+#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(100, 10'000'000)
 
 BENCHMARK_TEMPLATE(BM_host_axpy, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_host_axpy, double)->DUDA_BENCHMARK_RANGE;
