@@ -1,3 +1,5 @@
+#include <duda/reductions/reduce_sum.hpp>
+
 #include <thrust/device_ptr.h>
 #include <thrust/reduce.h>
 
@@ -16,17 +18,17 @@ inline T reduce_sum(const T* const data, const int size)
 
 } // namespace detail
 
-auto reduce_sum(const int* const data, const int size)
+int reduce_sum(const int* const data, const int size)
 {
     return detail::reduce_sum(data, size);
 }
 
-auto reduce_sum(const float* const data, const int size)
+float reduce_sum(const float* const data, const int size)
 {
     return detail::reduce_sum(data, size);
 }
 
-auto reduce_sum(const double* const data, const int size)
+double reduce_sum(const double* const data, const int size)
 {
     return detail::reduce_sum(data, size);
 }

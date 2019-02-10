@@ -1,3 +1,8 @@
+set(DUDA_MATH
+    math/exp.cu
+    math/log.cu
+    )
+
 set(DUDA_KERNELS
     kernels/fill.cu
     kernels/eye.cu
@@ -10,7 +15,7 @@ set(DUDA_REDUCTIONS
     reductions/reduce_minmax.cu
     )
 
-add_library(duda_kernels SHARED ${DUDA_KERNELS} ${DUDA_REDUCTIONS})
+add_library(duda_kernels SHARED ${DUDA_MATH} ${DUDA_KERNELS} ${DUDA_REDUCTIONS})
 
 target_include_directories(duda_kernels PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)

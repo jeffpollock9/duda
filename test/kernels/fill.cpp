@@ -5,18 +5,12 @@
 template <typename T>
 void test_fill(const int rows, const int cols, const T value)
 {
-    const auto ans = testing::host_matrix<T>::Constant(rows, cols, value);
+    const auto host = testing::host_matrix<T>::Constant(rows, cols, value);
 
-    {
-        duda::device_matrix<T> x(rows, cols);
-        duda::fill(x.data(), x.size(), value);
-        REQUIRE(testing::all_close(x, ans));
-    }
-    {
-        duda::device_matrix<T> x(rows, cols);
-        duda::fill(x, value);
-        REQUIRE(testing::all_close(x, ans));
-    }
+    duda::device_matrix<T> device(rows, cols);
+    duda::fill(device, value);
+
+    REQUIRE(testing::all_close(device, host));
 }
 
 TEST_CASE("fill matrix", "[device_matrix][fill]")
@@ -29,18 +23,12 @@ TEST_CASE("fill matrix", "[device_matrix][fill]")
 template <typename T>
 void test_fill(const int size, const T value)
 {
-    const auto ans = testing::host_vector<T>::Constant(size, value);
+    const auto host = testing::host_vector<T>::Constant(size, value);
 
-    {
-        duda::device_vector<T> x(size);
-        duda::fill(x.data(), x.size(), value);
-        REQUIRE(testing::all_close(x, ans));
-    }
-    {
-        duda::device_vector<T> x(size);
-        duda::fill(x, value);
-        REQUIRE(testing::all_close(x, ans));
-    }
+    duda::device_vector<T> device(size);
+    duda::fill(device, value);
+
+    REQUIRE(testing::all_close(device, host));
 }
 
 TEST_CASE("fill vector", "[device_vector][fill]")

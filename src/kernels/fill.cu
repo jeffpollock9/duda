@@ -1,3 +1,5 @@
+#include <duda/kernels/fill.hpp>
+
 #include <thrust/device_ptr.h>
 #include <thrust/fill.h>
 

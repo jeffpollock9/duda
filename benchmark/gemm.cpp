@@ -18,8 +18,8 @@ static void BM_host_gemm(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    const auto a = host_matrix<T>::Random(n, n);
-    const auto b = host_matrix<T>::Random(n, n);
+    const host_matrix<T> a = host_matrix<T>::Random(n, n);
+    const host_matrix<T> b = host_matrix<T>::Random(n, n);
     host_matrix<T> c       = host_matrix<T>::Random(n, n);
 
     for (auto _ : state)
@@ -50,7 +50,5 @@ BENCHMARK_TEMPLATE(BM_host_gemm, double)->DUDA_BENCHMARK_RANGE;
 
 BENCHMARK_TEMPLATE(BM_device_gemm, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_gemm, double)->DUDA_BENCHMARK_RANGE;
-
-#undef DUDA_BENCHMARK_RANGE
 
 BENCHMARK_MAIN();

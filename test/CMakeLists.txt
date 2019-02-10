@@ -12,6 +12,8 @@ set(DUDA_TESTS
     blas/level1
     blas/level2
     blas/level3
+    math/exp
+    math/log
     kernels/eye
     kernels/fill
     reductions/reduce_sum

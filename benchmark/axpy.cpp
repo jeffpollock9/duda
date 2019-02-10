@@ -15,8 +15,8 @@ static void BM_host_axpy(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    const auto x     = host_vector<T>::Random(n);
-    host_vector<T> y = host_vector<T>::Random(n);
+    const host_vector<T> x = host_vector<T>::Random(n);
+    host_vector<T> y       = host_vector<T>::Random(n);
 
     for (auto _ : state)
     {
@@ -45,7 +45,5 @@ BENCHMARK_TEMPLATE(BM_host_axpy, double)->DUDA_BENCHMARK_RANGE;
 
 BENCHMARK_TEMPLATE(BM_device_axpy, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_axpy, double)->DUDA_BENCHMARK_RANGE;
-
-#undef DUDA_BENCHMARK_RANGE
 
 BENCHMARK_MAIN();

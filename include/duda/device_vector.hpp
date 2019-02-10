@@ -113,8 +113,10 @@ std::ostream& operator<<(std::ostream& os, const device_vector<T>& x)
     std::ios flags(nullptr);
     flags.copyfmt(os);
 
-    os << std::setprecision(print_precision().value()) << std::scientific;
-    os << "[ ";
+    const auto precision = print_precision().value();
+
+    os << std::setprecision(precision) << std::scientific << std::showpos
+       << "[ ";
 
     for (int i = 0; i < x.size(); ++i)
     {

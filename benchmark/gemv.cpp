@@ -1,4 +1,4 @@
-#include <duda/blas.hpp>
+#include <duda/blas/level2.hpp>
 #include <duda/random.hpp>
 
 #include <Eigen/Dense>
@@ -21,9 +21,9 @@ static void BM_host_gemv(benchmark::State& state)
 {
     const int n = state.range(0);
 
-    const auto a     = host_matrix<T>::Random(n, n);
-    const auto x     = host_vector<T>::Random(n);
-    host_vector<T> y = host_vector<T>::Random(n);
+    const host_matrix<T> a = host_matrix<T>::Random(n, n);
+    const host_vector<T> x = host_vector<T>::Random(n);
+    host_vector<T> y       = host_vector<T>::Random(n);
 
     for (auto _ : state)
     {
@@ -53,7 +53,5 @@ BENCHMARK_TEMPLATE(BM_host_gemv, double)->DUDA_BENCHMARK_RANGE;
 
 BENCHMARK_TEMPLATE(BM_device_gemv, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_gemv, double)->DUDA_BENCHMARK_RANGE;
-
-#undef DUDA_BENCHMARK_RANGE
 
 BENCHMARK_MAIN();

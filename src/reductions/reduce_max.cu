@@ -1,3 +1,5 @@
+#include <duda/reductions/reduce_max.hpp>
+
 #include <thrust/device_ptr.h>
 #include <thrust/extrema.h>
 
@@ -18,17 +20,17 @@ inline T reduce_max(const T* const data, const int size)
 
 } // namespace detail
 
-auto reduce_max(const int* const data, const int size)
+int reduce_max(const int* const data, const int size)
 {
     return detail::reduce_max(data, size);
 }
 
-auto reduce_max(const float* const data, const int size)
+float reduce_max(const float* const data, const int size)
 {
     return detail::reduce_max(data, size);
 }
 
-auto reduce_max(const double* const data, const int size)
+double reduce_max(const double* const data, const int size)
 {
     return detail::reduce_max(data, size);
 }

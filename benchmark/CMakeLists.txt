@@ -4,7 +4,7 @@ find_package(benchmark REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(OpenMP REQUIRED)
 
-set(DUDA_BENCHMARKS axpy gemm gemv reduce_sum)
+set(DUDA_BENCHMARKS axpy gemm gemv reductions math)
 
 foreach(benchmark ${DUDA_BENCHMARKS})
     add_executable(benchmark_${benchmark} ${benchmark}.cpp)

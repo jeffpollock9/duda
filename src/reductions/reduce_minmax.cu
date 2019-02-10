@@ -1,3 +1,5 @@
+#include <duda/reductions/reduce_minmax.hpp>
+
 #include <thrust/device_ptr.h>
 #include <thrust/extrema.h>
 
@@ -20,17 +22,17 @@ inline std::pair<T, T> reduce_minmax(const T* const data, const int size)
 
 } // namespace detail
 
-auto reduce_minmax(const int* const data, const int size)
+std::pair<int, int> reduce_minmax(const int* const data, const int size)
 {
     return detail::reduce_minmax(data, size);
 }
 
-auto reduce_minmax(const float* const data, const int size)
+std::pair<float, float> reduce_minmax(const float* const data, const int size)
 {
     return detail::reduce_minmax(data, size);
 }
 
-auto reduce_minmax(const double* const data, const int size)
+std::pair<double, double> reduce_minmax(const double* const data, const int size)
 {
     return detail::reduce_minmax(data, size);
 }

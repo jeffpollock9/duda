@@ -2,8 +2,8 @@
 #define DEVICE_MATRIX_HPP_
 
 #include <duda/utility/check_error.hpp>
-#include <duda/utility/print_precision.hpp>
 #include <duda/utility/copy.hpp>
+#include <duda/utility/print_precision.hpp>
 
 #include <cuda_runtime_api.h>
 
@@ -131,7 +131,9 @@ std::ostream& operator<<(std::ostream& os, const device_matrix<T>& x)
     std::ios flags(nullptr);
     flags.copyfmt(os);
 
-    os << std::setprecision(print_precision().value()) << std::scientific;
+    const auto precision = print_precision().value();
+
+    os << std::setprecision(precision) << std::scientific << std::showpos;
 
     for (int i = 0; i < x.rows(); ++i)
     {
