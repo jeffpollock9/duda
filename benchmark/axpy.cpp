@@ -38,7 +38,7 @@ static void BM_device_axpy(benchmark::State& state)
     }
 }
 
-#define DUDA_BENCHMARK_RANGE Range(8, 8 << 8)
+#define DUDA_BENCHMARK_RANGE RangeMultiplier(10)->Range(10, 1'000'000)
 
 BENCHMARK_TEMPLATE(BM_host_axpy, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_host_axpy, double)->DUDA_BENCHMARK_RANGE;
