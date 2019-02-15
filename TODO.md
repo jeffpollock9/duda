@@ -22,4 +22,3 @@
 - test complex number stuff
 - use submodules for deps
 - add regular type checking stuff
-- use same values for benchmarks + add testing

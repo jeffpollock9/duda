@@ -1,6 +1,7 @@
 #ifndef DEVICE_VECTOR_HPP_
 #define DEVICE_VECTOR_HPP_
 
+#include <duda/detail/value_proxy.hpp>
 #include <duda/utility/check_error.hpp>
 #include <duda/utility/copy.hpp>
 #include <duda/utility/print_precision.hpp>
@@ -48,15 +49,6 @@ struct device_vector
         return *this;
     }
 
-    device_vector& operator=(device_vector&& x)
-    {
-        size_ = x.size();
-
-        std::swap(data_, x.data_);
-
-        return *this;
-    }
-
     ~device_vector()
     {
         check_error(cudaFree(data_));
@@ -74,12 +66,9 @@ struct device_vector
         return value;
     }
 
-    void set(const int index, const T value)
+    detail::value_proxy<T> operator()(const int index)
     {
-        const auto code = cudaMemcpy(
-            data_ + index, &value, sizeof(T), cudaMemcpyHostToDevice);
-
-        check_error(code);
+        return {data_, index};
     }
 
     int size() const

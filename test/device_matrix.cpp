@@ -70,3 +70,27 @@ TEST_CASE("host -> device -> host", "[device_matrix]")
     test_transfer<float>(4, 5);
     test_transfer<double>(10, 1);
 }
+
+template <typename T>
+void test_value_assignment(const int rows, const int cols)
+{
+    duda::device_matrix<T> device(rows, cols);
+    testing::host_matrix<T> host(rows, cols);
+
+    for (int j = 0; j < cols; ++j)
+    {
+        for (int i = 0; i < rows; ++i)
+        {
+            device(i, j) = i + j;
+            host(i, j)   = i + j;
+        }
+    }
+
+    REQUIRE(testing::all_close(device, host));
+}
+
+TEST_CASE("matrix(i, j) = value", "[device_matrix]")
+{
+    test_value_assignment<float>(100, 2);
+    test_value_assignment<double>(9, 19);
+}

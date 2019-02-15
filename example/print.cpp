@@ -13,7 +13,7 @@ int main()
 
         for (int i = 0; i < x.size(); ++i)
         {
-            x.set(i, i);
+            x(i) = i;
         }
         std::cout << x;
     }
@@ -27,7 +27,7 @@ int main()
         {
             for (int j = 0; j < x.cols(); ++j)
             {
-                x.set(i, j, j + i * 1000.0);
+                x(i, j) = j + i * 1000.0;
             }
         }
         duda::print_precision().value() = 2;

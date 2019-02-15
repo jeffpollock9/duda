@@ -1,5 +1,5 @@
-#include <duda/random.hpp>
 #include <duda/device_vector.hpp>
+#include <duda/random.hpp>
 
 #include <testing.hpp>
 
@@ -68,4 +68,25 @@ TEST_CASE("host -> device -> host", "[device_vector]")
 {
     test_transfer<float>(4);
     test_transfer<double>(10);
+}
+
+template <typename T>
+void test_value_assignment(const int size)
+{
+    duda::device_vector<T> device(size);
+    testing::host_vector<T> host(size);
+
+    for (int i = 0; i < size; ++i)
+    {
+        device(i) = i;
+        host(i)   = i;
+    }
+
+    REQUIRE(testing::all_close(device, host));
+}
+
+TEST_CASE("vector(i) = value", "[device_vector]")
+{
+    test_value_assignment<float>(100);
+    test_value_assignment<double>(9);
 }

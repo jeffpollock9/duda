@@ -1,6 +1,7 @@
 #ifndef DEVICE_MATRIX_HPP_
 #define DEVICE_MATRIX_HPP_
 
+#include <duda/detail/value_proxy.hpp>
 #include <duda/utility/check_error.hpp>
 #include <duda/utility/copy.hpp>
 #include <duda/utility/print_precision.hpp>
@@ -50,16 +51,6 @@ struct device_matrix
         return *this;
     }
 
-    device_matrix& operator=(device_matrix&& x)
-    {
-        rows_ = x.rows();
-        cols_ = x.cols();
-
-        std::swap(data_, x.data_);
-
-        return *this;
-    }
-
     ~device_matrix()
     {
         check_error(cudaFree(data_));
@@ -79,14 +70,9 @@ struct device_matrix
         return value;
     }
 
-    void set(const int row, const int col, const T value)
+    detail::value_proxy<T> operator()(const int row, const int col)
     {
-        const int index = row + rows() * col;
-
-        const auto code = cudaMemcpy(
-            data_ + index, &value, sizeof(T), cudaMemcpyHostToDevice);
-
-        check_error(code);
+        return {data_, row + rows() * col};
     }
 
     int rows() const

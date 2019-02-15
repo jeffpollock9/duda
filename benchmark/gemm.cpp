@@ -1,5 +1,4 @@
 #include <duda/blas/level3.hpp>
-#include <duda/device_vector.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>

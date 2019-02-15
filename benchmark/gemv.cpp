@@ -1,6 +1,4 @@
 #include <duda/blas/level2.hpp>
-#include <duda/device_matrix.hpp>
-#include <duda/device_vector.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
