@@ -35,7 +35,7 @@ struct device_vector
         copy_device_to_device(x, *this);
     }
 
-    device_vector(device_vector&& x) : size_(x.size())
+    device_vector(device_vector&& x) noexcept : size_(x.size())
     {
         std::swap(data_, x.data_);
     }

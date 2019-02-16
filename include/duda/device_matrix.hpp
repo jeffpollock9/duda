@@ -36,7 +36,7 @@ struct device_matrix
         copy_device_to_device(x, *this);
     }
 
-    device_matrix(device_matrix&& x) : rows_(x.rows()), cols_(x.cols())
+    device_matrix(device_matrix&& x) noexcept : rows_(x.rows()), cols_(x.cols())
     {
         std::swap(data_, x.data_);
     }
