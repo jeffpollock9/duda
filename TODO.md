@@ -1,7 +1,5 @@
 # duda TODO list
 
-- add more cub reduction stuff + benchmarks
-- tidy up directories into modules, e.g. random, blas, kernels
 - add all cuBLAS routines
 - add all cuSOLVER routines
 - add statistical distributions
@@ -20,5 +18,5 @@
   e.g. https://www.reddit.com/r/cpp/comments/996q8o/prepare_thy_pitchforks_a_de_facto_standard
 - put helpers stuff into helpers namespace
 - test complex number stuff
-- use submodules for deps
+- figure out wtf to do with dependencies
 - add regular type checking stuff

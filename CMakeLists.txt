@@ -7,6 +7,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 option(DUDA_TEST "Build tests" OFF)
 option(DUDA_BENCHMARK "Build benchmarks" OFF)
 option(DUDA_EXAMPLE "Build examples" OFF)
+option(DUDA_PYTHON "Build pyduda" OFF)
 
 message(STATUS "Configuring ${PROJECT_NAME} version: ${PROJECT_VERSION}")
 message(STATUS "  Options:")
@@ -46,4 +47,9 @@ endif()
 
 if(DUDA_EXAMPLE)
     add_subdirectory(example)
+endif()
+
+if(DUDA_PYTHON)
+    add_subdirectory(external/pybind11)
+    add_subdirectory(python)
 endif()
