@@ -16,21 +16,14 @@ __global__ void eye_kernel(T* const data, const int dim)
     {
         const int ix = i + j * dim;
 
-        if (i == j)
-        {
-            data[ix] = 1;
-        }
-        else
-        {
-            data[ix] = 0;
-        }
+        data[ix] = i == j;
     }
 }
 
 template <typename T>
 inline void eye(T* const data, const int dim)
 {
-    const int d = 32;
+    const int d = 16;
     const int n = (dim + d) / d;
 
     const dim3 blocks(n, n);
