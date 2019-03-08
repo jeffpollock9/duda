@@ -54,12 +54,23 @@ inline duda::device_vector<T> copy(const host_vector<T>& host)
     return {host.data(), size};
 }
 
-template <typename DeviceStorage, typename HostStorage>
-inline bool all_close(const DeviceStorage& device, const HostStorage& host)
+template <typename DeviceStorage, typename HostDerived>
+inline bool all_close(const DeviceStorage& device,
+                      const Eigen::MatrixBase<HostDerived>& host)
 {
     const auto device_data_on_host = copy(device);
 
     return host.isApprox(device_data_on_host);
+}
+
+template <typename DeviceStorage>
+inline bool all_close(const DeviceStorage& device1,
+                      const DeviceStorage& device2)
+{
+    const auto device1_data_on_host = copy(device1);
+    const auto device2_data_on_host = copy(device2);
+
+    return device1_data_on_host.isApprox(device2_data_on_host);
 }
 
 } // namespace testing

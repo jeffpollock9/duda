@@ -20,6 +20,7 @@ set(DUDA_TESTS
     reductions/reduce_min
     reductions/reduce_max
     reductions/reduce_minmax
+    random/all
     )
 
 foreach(test ${DUDA_TESTS})
