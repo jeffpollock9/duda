@@ -80,4 +80,25 @@ DUDA_BENCHMARK_REDUCTION(reduce_min)
 DUDA_BENCHMARK_REDUCTION(reduce_max)
 DUDA_BENCHMARK_REDUCTION(reduce_minmax)
 
-BENCHMARK_MAIN();
+int main(int argc, char** argv)
+{
+    rmmOptions_t options;
+    options.allocation_mode   = rmmAllocationMode_t::PoolAllocation;
+    options.initial_pool_size = 0;
+    options.enable_logging    = false;
+
+    const auto init = rmmInitialize(&options);
+    std::cout << "init code: " << rmmGetErrorString(init) << "\n";
+
+    ::benchmark::Initialize(&argc, argv);
+
+    if (::benchmark::ReportUnrecognizedArguments(argc, argv))
+    {
+        return 1;
+    }
+
+    ::benchmark::RunSpecifiedBenchmarks();
+
+    const auto fin_code = rmmFinalize();
+    std::cout << "finalize code: " << rmmGetErrorString(fin_code) << "\n";
+}
