@@ -10,5 +10,4 @@ Probably a C++ linear algebra library using cuda and some other stuff.
    in the duda source
 1. [eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page): for testing only
 1. [benchmark](https://github.com/google/benchmark): for benchmarks only
-1. [pybind11](https://github.com/pybind/pybind11): provided as a git submodule because
-   the others didn't work well
+1. [pybind11](https://github.com/pybind/pybind11): for python interface
