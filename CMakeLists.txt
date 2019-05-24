@@ -14,6 +14,7 @@ message(STATUS "  Options:")
 message(STATUS "   DUDA_TEST: ${DUDA_TEST}")
 message(STATUS "   DUDA_BENCHMARK: ${DUDA_BENCHMARK}")
 message(STATUS "   DUDA_EXAMPLE: ${DUDA_EXAMPLE}")
+message(STATUS "   DUDA_PYTHON: ${DUDA_PYTHON}")
 
 find_package(CUDA REQUIRED)
 
@@ -50,6 +51,5 @@ if(DUDA_EXAMPLE)
 endif()
 
 if(DUDA_PYTHON)
-    add_subdirectory(external/pybind11)
     add_subdirectory(python)
 endif()

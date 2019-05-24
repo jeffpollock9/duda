@@ -1,5 +1,7 @@
 include(add_basic_warnings)
 
+find_package(pybind11 REQUIRED)
+
 set(DUDA_PYTHON
     src/pyduda.cpp
     src/device_matrix.cpp
