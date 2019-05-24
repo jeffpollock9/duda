@@ -20,4 +20,6 @@ add_library(duda_kernels SHARED ${DUDA_MATH} ${DUDA_KERNELS} ${DUDA_REDUCTIONS})
 target_include_directories(duda_kernels PRIVATE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
 
+target_link_libraries(duda_kernels PRIVATE rmm::rmm)
+
 target_compile_features(duda_kernels PRIVATE cxx_std_14)

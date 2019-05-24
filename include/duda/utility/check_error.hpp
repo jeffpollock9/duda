@@ -6,12 +6,21 @@
 #include <cublas_v2.h>
 #include <cuda_runtime_api.h>
 #include <curand.h>
+#include <rmm/rmm.h>
 
 #include <stdexcept>
 #include <string>
 
 namespace duda
 {
+
+inline void check_error(const rmmError_t code)
+{
+    if (DUDA_UNLIKELY(code != rmmError_t::RMM_SUCCESS))
+    {
+        throw std::runtime_error("rmm error code: " + std::to_string(code));
+    }
+}
 
 inline void check_error(const cudaError_t code)
 {

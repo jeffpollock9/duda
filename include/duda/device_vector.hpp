@@ -7,6 +7,7 @@
 #include <duda/utility/print_precision.hpp>
 
 #include <cuda_runtime_api.h>
+#include <rmm/rmm.h>
 
 #include <iomanip>
 #include <iosfwd>
@@ -15,6 +16,33 @@
 namespace duda
 {
 
+struct cuda_stream_wrapper
+{
+    cuda_stream_wrapper()
+    {
+        check_error(cudaStreamCreate(&stream_));
+    }
+
+    ~cuda_stream_wrapper()
+    {
+        check_error(cudaStreamDestroy(stream_));
+    }
+
+    cudaStream_t& value()
+    {
+        return stream_;
+    }
+
+private:
+    cudaStream_t stream_;
+};
+
+inline cuda_stream_wrapper& cuda_stream()
+{
+    static cuda_stream_wrapper stream;
+    return stream;
+}
+
 template <typename T>
 struct device_vector
 {
@@ -22,7 +50,7 @@ struct device_vector
 
     device_vector(const int size) : size_(size)
     {
-        check_error(cudaMalloc((void**)&data_, bytes()));
+        check_error(RMM_ALLOC(&data_, bytes(), cuda_stream().value()));
     }
 
     device_vector(const T* const host, const int size) : device_vector(size)
@@ -51,7 +79,7 @@ struct device_vector
 
     ~device_vector()
     {
-        check_error(cudaFree(data_));
+        check_error(RMM_FREE(data_, cuda_stream().value()));
     }
 
     const T operator()(const int index) const

@@ -29,7 +29,7 @@ private:
     cublasHandle_t handle_;
 };
 
-cublas_handle_wrapper& cublas_handle()
+inline cublas_handle_wrapper& cublas_handle()
 {
     static cublas_handle_wrapper handle;
     return handle;

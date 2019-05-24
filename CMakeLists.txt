@@ -28,6 +28,7 @@ add_library(duda INTERFACE)
 
 target_link_libraries(duda INTERFACE
     duda_kernels
+    rmm::rmm
     ${CUDA_CUDART_LIBRARY}
     ${CUDA_cublas_LIBRARY}
     ${CUDA_curand_LIBRARY})
