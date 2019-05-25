@@ -1,5 +1,5 @@
-#ifndef DUDA_PRINT_PRECISION_HPP_
-#define DUDA_PRINT_PRECISION_HPP_
+#ifndef DUDA_UTILITY_PRINT_PRECISION_HPP_
+#define DUDA_UTILITY_PRINT_PRECISION_HPP_
 
 namespace duda
 {
@@ -26,4 +26,4 @@ inline print_precision_wrapper& print_precision()
 
 } // namespace duda
 
-#endif /* DUDA_PRINT_PRECISION_HPP_ */
+#endif /* DUDA_UTILITY_PRINT_PRECISION_HPP_ */
