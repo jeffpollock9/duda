@@ -18,15 +18,17 @@ inline void check_error(const rmmError_t code)
 {
     if (DUDA_UNLIKELY(code != rmmError_t::RMM_SUCCESS))
     {
-        throw std::runtime_error("rmm error code: " + std::to_string(code));
+        throw std::runtime_error(std::string("rmm error code: ") +
+                                 rmmGetErrorString(code));
     }
 }
 
 inline void check_error(const cudaError_t code)
 {
-    if (DUDA_UNLIKELY(code != cudaSuccess))
+    if (DUDA_UNLIKELY(code != cudaError_t::cudaSuccess))
     {
-        throw std::runtime_error("cuda error code: " + std::to_string(code));
+        throw std::runtime_error(std::string("cuda error: ") +
+                                 cudaGetErrorString(code));
     }
 }
 
