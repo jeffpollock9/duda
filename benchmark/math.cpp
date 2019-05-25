@@ -1,5 +1,6 @@
 #include <duda/device_vector.hpp>
 #include <duda/math.hpp>
+#include <duda/memory_manager.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
@@ -54,4 +55,16 @@ using host_vector = Eigen::Array<T, Eigen::Dynamic, 1>;
 DUDA_BENCHMARK_MATH(exp)
 DUDA_BENCHMARK_MATH(log)
 
-BENCHMARK_MAIN();
+int main(int argc, char** argv)
+{
+    duda::memory_manager memory_manager;
+
+    benchmark::Initialize(&argc, argv);
+
+    if (benchmark::ReportUnrecognizedArguments(argc, argv))
+    {
+        return 1;
+    }
+
+    benchmark::RunSpecifiedBenchmarks();
+}

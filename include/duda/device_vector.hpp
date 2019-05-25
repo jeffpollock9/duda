@@ -4,6 +4,7 @@
 #include <duda/detail/value_proxy.hpp>
 #include <duda/utility/check_error.hpp>
 #include <duda/utility/copy.hpp>
+#include <duda/utility/cuda_stream.hpp>
 #include <duda/utility/print_precision.hpp>
 
 #include <cuda_runtime_api.h>
@@ -15,33 +16,6 @@
 
 namespace duda
 {
-
-struct cuda_stream_wrapper
-{
-    cuda_stream_wrapper()
-    {
-        check_error(cudaStreamCreate(&stream_));
-    }
-
-    ~cuda_stream_wrapper()
-    {
-        check_error(cudaStreamDestroy(stream_));
-    }
-
-    cudaStream_t& value()
-    {
-        return stream_;
-    }
-
-private:
-    cudaStream_t stream_;
-};
-
-inline cuda_stream_wrapper& cuda_stream()
-{
-    static cuda_stream_wrapper stream;
-    return stream;
-}
 
 template <typename T>
 struct device_vector
@@ -106,7 +80,7 @@ struct device_vector
 
     int bytes() const
     {
-        return size() * sizeof(T);
+        return size_ * sizeof(T);
     }
 
     T* data()

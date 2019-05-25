@@ -1,4 +1,5 @@
 #include <duda/blas/level3.hpp>
+#include <duda/memory_manager.hpp>
 
 #include <Eigen/Dense>
 #include <benchmark/benchmark.h>
@@ -58,4 +59,16 @@ BENCHMARK_TEMPLATE(BM_host_gemm, double)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_gemm, float)->DUDA_BENCHMARK_RANGE;
 BENCHMARK_TEMPLATE(BM_device_gemm, double)->DUDA_BENCHMARK_RANGE;
 
-BENCHMARK_MAIN();
+int main(int argc, char** argv)
+{
+    duda::memory_manager memory_manager;
+
+    benchmark::Initialize(&argc, argv);
+
+    if (benchmark::ReportUnrecognizedArguments(argc, argv))
+    {
+        return 1;
+    }
+
+    benchmark::RunSpecifiedBenchmarks();
+}

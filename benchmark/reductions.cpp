@@ -1,4 +1,5 @@
 #include <duda/device_vector.hpp>
+#include <duda/memory_manager.hpp>
 #include <duda/reductions.hpp>
 
 #include <Eigen/Dense>
@@ -82,23 +83,14 @@ DUDA_BENCHMARK_REDUCTION(reduce_minmax)
 
 int main(int argc, char** argv)
 {
-    rmmOptions_t options;
-    options.allocation_mode   = rmmAllocationMode_t::PoolAllocation;
-    options.initial_pool_size = 0;
-    options.enable_logging    = false;
+    duda::memory_manager memory_manager;
 
-    const auto init = rmmInitialize(&options);
-    std::cout << "init code: " << rmmGetErrorString(init) << "\n";
+    benchmark::Initialize(&argc, argv);
 
-    ::benchmark::Initialize(&argc, argv);
-
-    if (::benchmark::ReportUnrecognizedArguments(argc, argv))
+    if (benchmark::ReportUnrecognizedArguments(argc, argv))
     {
         return 1;
     }
 
-    ::benchmark::RunSpecifiedBenchmarks();
-
-    const auto fin_code = rmmFinalize();
-    std::cout << "finalize code: " << rmmGetErrorString(fin_code) << "\n";
+    benchmark::RunSpecifiedBenchmarks();
 }

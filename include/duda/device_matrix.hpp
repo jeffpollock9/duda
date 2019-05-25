@@ -4,9 +4,11 @@
 #include <duda/detail/value_proxy.hpp>
 #include <duda/utility/check_error.hpp>
 #include <duda/utility/copy.hpp>
+#include <duda/utility/cuda_stream.hpp>
 #include <duda/utility/print_precision.hpp>
 
 #include <cuda_runtime_api.h>
+#include <rmm/rmm.h>
 
 #include <iomanip>
 #include <iosfwd>
@@ -22,7 +24,7 @@ struct device_matrix
 
     device_matrix(const int rows, const int cols) : rows_(rows), cols_(cols)
     {
-        check_error(cudaMalloc((void**)&data_, bytes()));
+        check_error(RMM_ALLOC(&data_, bytes(), cuda_stream().value()));
     }
 
     device_matrix(const T* const host, const int rows, const int cols)
@@ -53,7 +55,7 @@ struct device_matrix
 
     ~device_matrix()
     {
-        check_error(cudaFree(data_));
+        check_error(RMM_FREE(data_, cuda_stream().value()));
     }
 
     const T operator()(const int row, const int col) const
