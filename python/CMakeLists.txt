@@ -7,6 +7,9 @@ set(DUDA_PYTHON
     src/device_matrix.cpp
     src/device_vector.cpp
     src/random.cpp
+    src/enums.cpp
+    src/memory_manager.cpp
+    src/matmul.cpp
     )
 
 pybind11_add_module(pyduda ${DUDA_PYTHON})

@@ -13,7 +13,7 @@ namespace duda
 
 struct memory_manager
 {
-    memory_manager(const rmmOptions_t options) : options_{options}
+    memory_manager(const rmmOptions_t& options) : options_{options}
     {
         check_error(rmmInitialize(&options_));
     }

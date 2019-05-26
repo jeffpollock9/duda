@@ -12,6 +12,7 @@ set(DUDA_TESTS
     blas/level1
     blas/level2
     blas/level3
+    linalg/matmul
     math/exp
     math/log
     kernels/eye
